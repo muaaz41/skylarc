@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auctions - SkyLarc</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auctions-page">
+  <main class="auctions-main">
+    <section class="auctions-hero">
+      <header class="navbar">
+        <div class="navbar__container">
+          <div class="navbar__logo">
+            <a href="/">
+              <img src="assets/Logo_Image.png" alt="SkyLarc Auctions Logo" class="navbar__logo-img">
+            </a>
+          </div>
+
+          <nav class="navbar__menu" id="navMenu">
+            <ul class="navbar__list">
+              <li><a href="sell.html" class="navbar__link">Sell With Skylarc</a></li>
+              <li><a href="auctions.html" class="navbar__link">Auctions</a></li>
+              <li><a href="case-studies.html" class="navbar__link">Case Studies</a></li>
+              <li><a href="about.html" class="navbar__link">About Us</a></li>
+              <li><a href="resources.html" class="navbar__link">Resources</a></li>
+              <li><a href="contact.html" class="navbar__link">Contact US</a></li>
+            </ul>
+          </nav>
+
+          <div class="navbar__actions">
+            <button class="navbar__search" id="searchBtn" aria-label="Search">
+              <img src="assets/Search_Icon.svg" alt="Search" class="navbar__search-icon">
+            </button>
+            <a href="#auction-alerts" class="btn btn--navbar-primary">Auction Alerts</a>
+          </div>
+
+          <button class="navbar__hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span class="navbar__hamburger-line"></span>
+            <span class="navbar__hamburger-line"></span>
+            <span class="navbar__hamburger-line"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="auctions-hero__overlay"></div>
+      <div class="auctions-hero__content">
+        <h1>Asset Auctions</h1>
+        <p>Browse active online auctions across New Zealand.</p>
+      </div>
+    </section>
+
+    <section class="auctions-listing-section">
+      <div class="auctions-market-overlay">
+        <div class="auctions-market-overlay__top">
+          <div class="auctions-market-overlay__tab auctions-market-overlay__tab--active">
+            <img src="assets/marketplace.png" alt="" class="auctions-market-overlay__icon-img" aria-hidden="true">
+            <span>Marketplace</span>
+          </div>
+          <div class="auctions-market-overlay__tab">
+            <img src="assets/property.png" alt="" class="auctions-market-overlay__icon-img" aria-hidden="true">
+            <span>Property</span>
+          </div>
+          <div class="auctions-market-overlay__tab">
+            <img src="assets/car.png" alt="" class="auctions-market-overlay__icon-img" aria-hidden="true">
+            <span>Motors</span>
+          </div>
+          <div class="auctions-market-overlay__tab">
+            <img src="assets/job.png" alt="" class="auctions-market-overlay__icon-img" aria-hidden="true">
+            <span>Jobs</span>
+          </div>
+          <div class="auctions-market-overlay__tab">
+            <img src="assets/gear.png" alt="" class="auctions-market-overlay__icon-img" aria-hidden="true">
+            <span>Services</span>
+          </div>
+        </div>
+
+        <div class="auctions-market-overlay__search-row">
+          <img src="assets/magnofier.png" alt="" class="auctions-market-overlay__search-icon-img" aria-hidden="true">
+          <span class="auctions-market-overlay__search-text">Search</span>
+        </div>
+
+        <div class="auctions-market-overlay__categories">
+          <p class="auctions-market-overlay__label">Browse Marketplace</p>
+          <div class="auctions-market-overlay__grid">
+            <span>Antiques &amp; Collectables</span>
+            <span>Clothing &amp; Accessories</span>
+            <span>Health &amp; Beauty</span>
+            <span>Video Games</span>
+            <span>Art</span>
+            <span>Electronics</span>
+            <span>Jewellery</span>
+            <span>Watches</span>
+            <span class="auctions-market-overlay__buy-gear">Buy Gear</span>
+            <span>Furniture</span>
+            <span>Musical Instruments</span>
+            <span>Automotive</span>
+            <span>Books</span>
+            <span>Home &amp; Garden</span>
+            <span>Office Supplies</span>
+            <span>Crafts</span>
+            <span>Building &amp; Renovation</span>
+            <span>Sports &amp; Outdoors</span>
+            <span>Pet Supplies</span>
+            <span>Home Improvement</span>
+            <span>Business, Farming &amp; Industry</span>
+            <span>Toys &amp; Hobbies</span>
+            <span>Travel &amp; Luggage</span>
+            <span>Photography</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="auctions-listing__controls">
+        <div class="auctions-listing__search-wrap">
+          <input type="search" class="auctions-listing__search" placeholder="Search Case Studies...">
+          <img src="assets/magnofier.png" alt="" class="auctions-listing__search-icon" aria-hidden="true">
+        </div>
+
+        <div class="auctions-listing__sort-wrap">
+          <select class="auctions-listing__sort">
+            <option selected>Sort By: Most Recent</option>
+            <option>Highest Auction Number</option>
+            <option>Least Time left</option>
+            <option>Lowest Auction Number</option>
+            <option>Average Auction Number</option>
+            <option>Newest (Published)</option>
+          </select>
+          <img src="assets/Arrow Down.png" alt="" class="auctions-listing__sort-icon" aria-hidden="true">
+        </div>
+      </div> -->
+
+      <div class="section-3__carousel auctions-cards-grid">
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/auction1.png" alt="Dart Engineering Heavy Welding Site Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 19 April 2026</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Dart Engineering Heavy Welding Site Auction</h3>
+            <p class="section-3__card-description">Massive Engineering plant and machinery auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">4170</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">699</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/auction2.png" alt="Dart Engineering Light Fabrication Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 19 April 2026</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Dart Engineering Light Fabrication Auction</h3>
+            <p class="section-3__card-description">Auction Engineering plant and machinery auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">4170</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">699</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/auction3.png" alt="Skylarc's Surplus Machinery Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 19 April 2026</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Skylarc's Surplus Machinery Auction Platform</h3>
+            <p class="section-3__card-description">Browse our latest online auctions &amp; tenders</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">2131</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">298</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/press.png" alt="GreenTech Solar Panels Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 19 April 2026</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">GreenTech Solar Panels Auction</h3>
+            <p class="section-3__card-description">High quality solar panels and accessories auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">3250</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">450</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/rolla.png" alt="Vintage Cars and Memorabilia Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 19 April 2026</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Vintage Cars and Memorabilia Auction</h3>
+            <p class="section-3__card-description">Classic car collection and memorabilia auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">5200</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">800</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/roll.png" alt="Industrial Tools and Equipment Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 19 April 2026</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Industrial Tools and Equipment Auction</h3>
+            <p class="section-3__card-description">Wide range of industrial tools and equipment auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">4100</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">600</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/van.png" alt="Estate Liquidation Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Sunday, 30 January 2027</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Estate Liquidation Auction</h3>
+            <p class="section-3__card-description">Rare and unique collectibles auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">1600</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">320</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/excalivators.png" alt="Tech Gadgets and Electronics Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Tuesday, 15 March 2027</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Tech Gadgets and Electronics Auction</h3>
+            <p class="section-3__card-description">Latest technology equipment auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">3750</span><span class="section-3__stat-value">Audience</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">750</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-3__card">
+          <div class="section-3__image-wrapper">
+            <img src="assets/lifter.png" alt="Real Estate Property Auction" class="section-3__image">
+            <div class="section-3__badge"><p class="section-3__badge-text">Auction End: Friday, 18 April 2027</p></div>
+          </div>
+          <div class="section-3__content">
+            <h3 class="section-3__card-title">Real Estate Property Auction</h3>
+            <p class="section-3__card-description">Luxury homes and premium properties auction</p>
+            <div class="section-3__stats">
+              <div class="section-3__stat"><img src="assets/Frame-1.svg" alt="Audience" class="section-3__stat-icon"><div><span class="section-3__stat-label">55</span><span class="section-3__stat-value">Luxury Homes</span></div></div>
+              <div style="width: 1px; height: 40px; background: #E5E1E3;"></div>
+              <div class="section-3__stat"><img src="assets/Frame.svg" alt="Bidders" class="section-3__stat-icon"><div><span class="section-3__stat-label">1000</span><span class="section-3__stat-value">Bidders</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auctions-pagination">
+        <button class="auctions-pagination__nav" aria-label="Previous page">
+          <img src="assets/Arrow Down.png" alt="" class="auctions-pagination__nav-icon auctions-pagination__nav-icon--prev">
+        </button>
+        <button class="auctions-pagination__page auctions-pagination__page--active">1</button>
+        <button class="auctions-pagination__page">2</button>
+        <button class="auctions-pagination__page">3</button>
+        <button class="auctions-pagination__page">...</button>
+        <button class="auctions-pagination__page">9</button>
+        <button class="auctions-pagination__nav" aria-label="Next page">
+          <img src="assets/Arrow Down.png" alt="" class="auctions-pagination__nav-icon auctions-pagination__nav-icon--next">
+        </button>
+      </div>
+    </section>
+
+    <section class="section-4-placeholder">
+      <div class="section-4__header">
+        <h2 class="section-4__title">A Simple, Proven Process</h2>
+        <p class="section-4__subtitle">We streamline the process, ensuring transparency and efficiency every step of the way.</p>
+      </div>
+
+      <div class="section-4__image-row">
+        <article class="section-4__image-card"><img src="assets/process.png" alt="Inspect and valuation step image"></article>
+        <article class="section-4__image-card"><img src="assets/process-1.png" alt="Professional listings step image"></article>
+        <article class="section-4__image-card"><img src="assets/process-3.png" alt="Auction management step image"></article>
+        <article class="section-4__image-card"><img src="assets/process-2.png" alt="Payment and settlement step image"></article>
+      </div>
+
+      <div class="section-4__timeline">
+        <span class="section-4__timeline-step section-4__timeline-step--active">01</span>
+        <span class="section-4__timeline-step">02</span>
+        <span class="section-4__timeline-step">03</span>
+        <span class="section-4__timeline-step">04</span>
+      </div>
+
+      <div class="section-4__content-row">
+        <article class="section-4__content-card"><h3>Inspect &amp; Valuation</h3><p>We assess your assets and recommend the right sale strategy to maximise returns.</p></article>
+        <article class="section-4__content-card"><h3>Professional Listings</h3><p>We create high-quality listings with strong photography and targeted marketing.</p></article>
+        <article class="section-4__content-card"><h3>Auction Management</h3><p>Your auction goes live with full buyer management and enquiry handling.</p></article>
+        <article class="section-4__content-card"><h3>Payment &amp; Settlement</h3><p>We manage completion and settlement, helping ensure a smooth final transaction.</p></article>
+      </div>
+    </section>
+
+    <section class="auctions-results-section">
+      <div class="auctions-results__intro">
+        <p>
+          A targeted international marketing campaign generated strong global exposure across aviation media, national television, radio, &amp; digital channels to attract qualified buyers.
+        </p>
+      </div>
+
+      <div class="auctions-results__content">
+        <div class="auctions-results__media-card">
+          <div class="auctions-results__image-placeholder" aria-label="Results image placeholder">
+            <img src="assets/meet.png" alt="Campaign results visual">
+          </div>
+
+          <div class="auctions-results__text">
+            <article>
+              <h3>Multi-Channel Industry Reach</h3>
+              <p>Targeted placements across leading aviation publications and digital platforms positioned the Jetpack opportunity in front of highly qualified global buyers.</p>
+            </article>
+
+            <article>
+              <h3>National Media Exposure</h3>
+              <p>Strategic PR and broadcast coverage across major New Zealand television,<br> radio, and news outlets significantly amplified awareness and buyer interest.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auctions-driving-section">
+      <div class="auctions-driving__header">
+        <h2>Driving Results Through<br>Online Auctions</h2>
+      </div>
+
+      <div class="auctions-driving__stats">
+        <article class="auctions-driving__stat">
+          <p class="auctions-driving__desc">Final hammer price achieved through competitive nationwide bidding.</p>
+          <h3>$150K+</h3>
+          <span>Sold Price</span>
+        </article>
+
+        <article class="auctions-driving__stat">
+          <p class="auctions-driving__desc">Auction closed successfully with strong verified buyer participation.</p>
+          <h3>24 Mar 2021</h3>
+          <span>Date Sold</span>
+        </article>
+
+        <article class="auctions-driving__stat">
+          <p class="auctions-driving__desc">Total competitive bids placed by qualified buyers during the auction.</p>
+          <h3>179</h3>
+          <span>Bids Made</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-5-placeholder">
+      <div class="section-5__header">
+        <h2 class="section-5__title">What Our Clients Say</h2>
+        <p class="section-5__subtitle">Here's what some of the people who have worked with us have had to say about their experience.</p>
+      </div>
+
+      <div class="section-5__reviews">
+        <div class="section-5__image-placeholder">
+          <img src="assets/client-say.png" alt="Client testimonial photo" class="section-5__client-image">
+        </div>
+
+        <div class="section-5__review-list">
+          <div class="section-5__review-arrow section-5__review-arrow--top"><img src="assets/Scroll Up Icon.png" alt="Scroll up reviews"></div>
+          <article class="section-5__review-card"><span class="section-5__stars">★★★★★</span><p>Thank you Skylarc, very quick and superior service. Highly recommended.</p></article>
+          <article class="section-5__review-card section-5__review-card--active"><span class="section-5__stars">★★★★★</span><p>Sam and the team at Skylarc made an extremely complex process seem easy. The professionalism and integrity they displayed was second to none and we were absolutely astounded by the results they delivered.</p></article>
+          <article class="section-5__review-card"><span class="section-5__stars">★★★★★</span><p>Thanks Sam, a quick and easy way to exit business, with surprising results.</p></article>
+          <div class="section-5__review-arrow section-5__review-arrow--bottom"><img src="assets/Scroll Down Icon.png" alt="Scroll down reviews"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-8-cta">
+      <div class="section-8__sales-card"><img src="assets/Sales Performance Container.png" alt="Sales performance summary chart"></div>
+      <div class="section-8__content">
+        <h3>Ready To Maximise Your Asset Sale?</h3>
+        <p>Talk to our experienced team about your assets and get a clear, no-obligation proposal.</p>
+        <div class="section-8__actions">
+          <a href="contact.html" class="section-8__btn-primary">Discuss Your Assets</a>
+          <a href="contact.html" class="section-8__btn-secondary">Contact Us</a>
+        </div>
+      </div>
+      <div class="section-8__metrics-card"><img src="assets/Metrics Summary Container.png" alt="Auction performance summary metrics"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <img src="assets/Logo_footer.png" alt="SkyLarc Asset Realisation" class="footer__logo">
+          <p class="footer__description">We manage your asset sale end-to-end with a transparent process & proven results.</p>
+          <div class="footer__social">
+            <a href="#" class="footer__social-link" aria-label="Facebook"><img src="assets/Social-Media-Icon.svg" alt="Facebook"></a>
+            <a href="#" class="footer__social-link" aria-label="Instagram"><img src="assets/Social-Media-Icon-1.svg" alt="Instagram"></a>
+            <a href="#" class="footer__social-link" aria-label="LinkedIn"><img src="assets/Social-Media-Icon-2.svg" alt="LinkedIn"></a>
+          </div>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h3 class="footer__column-title">Quick Links</h3>
+            <ul class="footer__list">
+              <li><a href="sell.html" class="footer__link">Sell With Skylarc</a></li>
+              <li><a href="auctions.html" class="footer__link">Auctions</a></li>
+              <li><a href="case-studies.html" class="footer__link">Case Studies</a></li>
+              <li><a href="about.html" class="footer__link">About</a></li>
+              <li><a href="resources.html" class="footer__link">Resources</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h3 class="footer__column-title">Resources</h3>
+            <ul class="footer__list">
+              <li><a href="sell.html" class="footer__link">Sell With Skylarc</a></li>
+              <li><a href="auctions.html" class="footer__link">Auctions</a></li>
+              <li><a href="case-studies.html" class="footer__link">Case Studies</a></li>
+              <li><a href="about.html" class="footer__link">About</a></li>
+              <li><a href="resources.html" class="footer__link">Resources</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer__newsletter">
+          <h3 class="footer__newsletter-title">Get New Auctions Sent To Your Inbox</h3>
+          <form class="footer__newsletter-form">
+            <input type="email" placeholder="Email Here" class="footer__newsletter-input" required>
+            <button type="submit" class="footer__newsletter-button" aria-label="Subscribe"><img src="assets/Submit.svg" alt="Submit"></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2026 Copyright Skylarc Asset Realisation</p>
+        <div class="footer__bottom-links">
+          <a href="contact.html" class="footer__bottom-link">Site Map</a>
+          <a href="terms.html" class="footer__bottom-link">Terms & Conditions</a>
+          <a href="privacy-policy.html" class="footer__bottom-link">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
