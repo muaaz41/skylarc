@@ -15,6 +15,13 @@ function initNavigation() {
   const navMenu = document.getElementById('navMenu');
   const navLinks = document.querySelectorAll('.navbar__link');
 
+  function closeNavMenu() {
+    if (!hamburger || !navMenu) return;
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
   // Mobile menu toggle
   if (hamburger) {
     hamburger.addEventListener('click', function() {
@@ -28,9 +35,7 @@ function initNavigation() {
   navLinks.forEach(link => {
     link.addEventListener('click', function() {
       if (hamburger && hamburger.classList.contains('active')) {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', 'false');
+        closeNavMenu();
       }
     });
   });
@@ -41,9 +46,14 @@ function initNavigation() {
         !hamburger.contains(e.target) && 
         !navMenu.contains(e.target) &&
         hamburger.classList.contains('active')) {
-      hamburger.classList.remove('active');
-      navMenu.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', 'false');
+      closeNavMenu();
+    }
+  });
+
+  // Reset dropdown menu when leaving tablet/mobile breakpoints
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 1024) {
+      closeNavMenu();
     }
   });
 
