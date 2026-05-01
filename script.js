@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   initNavigation();
+  initPastAuctionFilters();
 });
 
 /**
@@ -59,6 +60,36 @@ function initNavigation() {
 
   // Set active nav link based on current page
   setActiveNavLink();
+}
+
+function initPastAuctionFilters() {
+  const toolbar = document.querySelector('.past-auction-toolbar--collapsible');
+  const toggleButton = toolbar ? toolbar.querySelector('[data-filter-toggle]') : null;
+
+  if (!toolbar || !toggleButton) return;
+
+  const syncToolbarState = () => {
+    if (window.innerWidth > 1024) {
+      toolbar.classList.remove('filters-open');
+      toggleButton.setAttribute('aria-expanded', 'false');
+    }
+  };
+
+  toggleButton.addEventListener('click', function() {
+    const isOpen = toolbar.classList.toggle('filters-open');
+    toggleButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  document.addEventListener('click', function(event) {
+    if (window.innerWidth > 1024) return;
+    if (!toolbar.contains(event.target)) {
+      toolbar.classList.remove('filters-open');
+      toggleButton.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  window.addEventListener('resize', syncToolbarState);
+  syncToolbarState();
 }
 
 /**

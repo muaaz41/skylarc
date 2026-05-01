@@ -114,7 +114,7 @@
             </div>
             <div class="upcoming-auction-card__bottom">
               <p class="upcoming-auction-card__price">$385</p>
-              <a href="#" class="upcoming-auction-card__cta">TradeMe Listing <span aria-hidden="true">↗</span></a>
+              <a href="sell.html" class="upcoming-auction-card__cta">TradeMe Listing <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
@@ -146,7 +146,7 @@
             </div>
             <div class="upcoming-auction-card__bottom">
               <p class="upcoming-auction-card__price">$250</p>
-              <a href="#" class="upcoming-auction-card__cta">TradeMe Listing <span aria-hidden="true">↗</span></a>
+              <a href="sell.html" class="upcoming-auction-card__cta">TradeMe Listing <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
@@ -159,28 +159,36 @@
         </div>
       </div>
 
-      <div class="past-auction-toolbar">
+      <div class="past-auction-toolbar past-auction-toolbar--collapsible">
         <div class="past-auction-toolbar__item past-auction-toolbar__item--search">
-          <span>Search within Baby Gear</span>
+          <input
+            type="text"
+            class="past-auction-toolbar__search-input"
+            placeholder="Search within Baby Gear"
+            aria-label="Search within Baby Gear"
+          >
           <img src="assets/magnofier.png" alt="" aria-hidden="true">
         </div>
-        <button class="past-auction-toolbar__item" type="button">
+        <button class="past-auction-toolbar__filter-trigger" type="button" aria-label="Open filters" aria-expanded="false" data-filter-toggle>
+          <img src="assets/filters.png" alt="" aria-hidden="true">
+        </button>
+        <button class="past-auction-toolbar__item past-auction-toolbar__item--option" type="button">
           <span>Location: All</span>
           <img src="assets/Arrow Down.png" alt="" aria-hidden="true">
         </button>
-        <button class="past-auction-toolbar__item" type="button">
+        <button class="past-auction-toolbar__item past-auction-toolbar__item--option" type="button">
           <span>Items: New &amp; Used</span>
           <img src="assets/Arrow Down.png" alt="" aria-hidden="true">
         </button>
-        <button class="past-auction-toolbar__item" type="button">
+        <button class="past-auction-toolbar__item past-auction-toolbar__item--option" type="button">
           <span>Shipping: All</span>
           <img src="assets/Arrow Down.png" alt="" aria-hidden="true">
         </button>
-        <button class="past-auction-toolbar__item" type="button">
+        <button class="past-auction-toolbar__item past-auction-toolbar__item--option" type="button">
           <span>Price: Any</span>
           <img src="assets/Arrow Down.png" alt="" aria-hidden="true">
         </button>
-        <button class="past-auction-toolbar__item" type="button">
+        <button class="past-auction-toolbar__item past-auction-toolbar__item--option" type="button">
           <span>Sort By: Latest</span>
           <img src="assets/Arrow Down.png" alt="" aria-hidden="true">
         </button>
