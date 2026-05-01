@@ -4926,11 +4926,14 @@ main {
   .footer__bottom-links {
     order: 1;
     gap: 18px;
+    width: 100%;
+    justify-content: center;
   }
 
   .footer__bottom-link {
     font-size: 13px !important;
     line-height: 18px !important;
+    text-align: center;
   }
 
   .footer__copyright {
@@ -8847,6 +8850,12 @@ main.resources-page {
   .footer__bottom-links {
     order: 1;
     gap: 18px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer__bottom-link {
+    text-align: center;
   }
 
   .footer__copyright {
