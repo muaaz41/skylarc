@@ -332,6 +332,24 @@
         featureObserver.observe(featureSection);
       }
 
+      const bottomCta = document.querySelector(".rs-bottom-layout");
+      if (bottomCta) {
+        bottomCta.classList.add("rs-bottom-layout--animate-ready");
+
+        const bottomObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            bottomCta.classList.add("rs-bottom-layout--in-view");
+            observer.unobserve(entry.target);
+          });
+        }, {
+          threshold: 0.2,
+          rootMargin: "0px 0px -80px 0px"
+        });
+
+        bottomObserver.observe(bottomCta);
+      }
+
       tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
           tabs.forEach((btn) => btn.classList.remove("active"));

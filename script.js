@@ -4,6 +4,7 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', function() {
+  initUpcomingLiveAuctionCarouselDelays();
   initNavbarIntroAnimation();
   initAuctionSingleTopIntroAnimation();
   initNavigation();
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initAboutMissionScrollAnimation();
   initAboutDifferentScrollAnimation();
   initAboutTeamScrollAnimation();
+  initUpcomingPastAuctionAnimation();
   initCaseFilterScrollAnimation();
   initAuctionsListingIntroAnimation();
   initAuctionsCardsGridAnimation();
@@ -37,6 +39,32 @@ document.addEventListener('DOMContentLoaded', function() {
   initAuctionSingleSpecAnimation();
   initAuctionSinglePickupAnimation();
 });
+
+/** Sync “Auction” live cards stagger to category line animation end (upcoming auctions page only). */
+function initUpcomingLiveAuctionCarouselDelays() {
+  if (!document.body.classList.contains('upcoming-auctions-page')) return;
+
+  const section = document.querySelector('.auctions-listing-section');
+  const grid = document.querySelector('.upcoming-auction-cards--stagger-animate');
+  const header = document.querySelector('.upcoming-auction-live__header--anim-on');
+  if (!section || !grid || !header) return;
+
+  const categoryEls = section.querySelectorAll(
+    '.auctions-market-overlay__label, .auctions-market-overlay__grid span'
+  );
+  const n = categoryEls.length;
+  const base = n > 0 ? 1.02 + (n - 1) * 0.08 + 0.72 + 0.12 : 2.82;
+
+  const title = header.querySelector('.section-3__title');
+  if (title) title.style.setProperty('--ula-title-delay', `${base}s`);
+
+  grid.style.setProperty('--ula-tile-1-delay', `${base + 0.4}s`);
+  grid.style.setProperty('--ula-tile-2-delay', `${base + 0.56}s`);
+  grid.style.setProperty('--ula-content-1-delay', `${base + 0.95}s`);
+  grid.style.setProperty('--ula-content-2-delay', `${base + 1.15}s`);
+  grid.style.setProperty('--ula-image-1-delay', `${base + 1.42}s`);
+  grid.style.setProperty('--ula-image-2-delay', `${base + 1.62}s`);
+}
 
 function initAuctionSingleTopIntroAnimation() {
   const pageNavbar = document.querySelector('.auction-single-page .auction-single-hero .navbar');
@@ -930,8 +958,12 @@ function initCaseFilterScrollAnimation() {
 function initAuctionsListingIntroAnimation() {
   const section = document.querySelector('.auctions-page .auctions-listing-section');
   if (!section) return;
+  const isUpcomingPage = document.body.classList.contains('upcoming-auctions-page');
 
   section.classList.add('auctions-listing--animate-ready');
+  if (isUpcomingPage) {
+    section.classList.add('upcoming-options--animate');
+  }
 
   const tabs = section.querySelectorAll('.auctions-market-overlay__top .auctions-market-overlay__tab');
   tabs.forEach((tab, index) => {
@@ -944,10 +976,14 @@ function initAuctionsListingIntroAnimation() {
     searchRow.style.setProperty('--auction-filter-delay', `${0.16 + tabs.length * 0.08}s`);
   }
 
-  const categories = section.querySelectorAll('.auctions-market-overlay__grid span');
+  const categories = section.querySelectorAll('.auctions-market-overlay__label, .auctions-market-overlay__grid span');
   categories.forEach((item, index) => {
-    const delay = 0.62 + index * 0.035;
+    const delay = 0.28 + index * 0.045;
     item.style.setProperty('--auction-category-delay', `${delay}s`);
+    if (isUpcomingPage) {
+      const heroSyncedDelay = 1.02 + index * 0.08;
+      item.style.setProperty('--upcoming-option-delay', `${heroSyncedDelay}s`);
+    }
   });
 
   // Ensure initial right-offset state is painted before in-view class.
@@ -984,6 +1020,43 @@ function initAuctionsCardsGridAnimation() {
   });
 
   observer.observe(grid);
+}
+
+function initUpcomingPastAuctionAnimation() {
+  if (!document.body.classList.contains('upcoming-auctions-page')) return;
+
+  const section = document.querySelector('.upcoming-auctions-page .auctions-listing-section');
+  const header = section?.querySelector('.upcoming-past-auction__header');
+  const toolbar = section?.querySelector('.past-auction-toolbar');
+  const cards = section?.querySelectorAll('.upcoming-past-auction__cards .industry-card');
+  if (!section || !header || !toolbar || !cards?.length) return;
+
+  section.classList.add('upcoming-past--animate-ready');
+
+  const filterItems = toolbar.querySelectorAll('.past-auction-toolbar__filter-trigger, .past-auction-toolbar__item--option');
+  filterItems.forEach((item, index) => {
+    const delay = 0.18 + index * 0.08;
+    item.style.setProperty('--upcoming-filter-delay', `${delay}s`);
+  });
+
+  cards.forEach((card, index) => {
+    const delay = 0.24 + index * 0.08;
+    card.style.setProperty('--upcoming-past-card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('upcoming-past--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(header);
 }
 
 function initAuctionsResultsAnimation() {
