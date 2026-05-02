@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
   initSectionOneScrollAnimation();
   initSectionTwoScrollAnimation();
   initSectionThreeScrollAnimation();
+  initProcessSectionScroll();
+  initSectionFourScrollAnimation();
   initSectionFiveScrollAnimation();
+  initSectionFiveMobileCarousel();
   initSectionSixScrollAnimation();
   initSectionSevenScrollAnimation();
   initSectionEightScrollAnimation();
@@ -307,6 +310,148 @@ function initSectionThreeScrollAnimation() {
   observer.observe(sectionThree);
 }
 
+function initProcessSectionScroll() {
+  const tracks = document.querySelectorAll('.process-scroll-track');
+  if (!tracks.length) return;
+
+  const thresholds = [0, 0.33, 0.66, 1];
+  const COMPLETE_MS = 2200;
+
+  function applyProcessTrackProgress(track, p) {
+    const useDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    const section = track.querySelector('.process-section');
+    if (!section) return;
+
+    const cardsStrip = section.querySelector('#cardsStrip') || section.querySelector('.cards-strip');
+    const textStrip = section.querySelector('#textStrip') || section.querySelector('.text-strip');
+    const timelineRow = section.querySelector('#timelineRow') || section.querySelector('.timeline-row');
+    const progressEl = section.querySelector('#timelineBar') || section.querySelector('.timeline-progress');
+    const badges = section.querySelectorAll('.step-badge');
+
+    const clamped = Math.max(0, Math.min(1, p));
+
+    if (progressEl) progressEl.style.width = `${clamped * 100}%`;
+
+    badges.forEach((badge, i) => {
+      const t = thresholds[i] ?? 1;
+      const active = i === 0 ? clamped > 0 : clamped >= t;
+      badge.classList.toggle('active', active);
+    });
+
+    if (useDesktop) {
+      const firstCard = cardsStrip && cardsStrip.querySelector('.step-card');
+      const halfCard = firstCard ? firstCard.offsetWidth / 2 : 0;
+      const shiftPx = clamped * halfCard;
+      const translate = `translateX(${-shiftPx}px)`;
+
+      if (cardsStrip) cardsStrip.style.transform = translate;
+      if (textStrip) textStrip.style.transform = translate;
+      if (timelineRow) timelineRow.style.transform = translate;
+    } else {
+      const carouselPct = clamped * 75;
+      const translate = `translateX(-${carouselPct}%)`;
+
+      if (cardsStrip) cardsStrip.style.transform = translate;
+      if (textStrip) textStrip.style.transform = translate;
+      if (timelineRow) timelineRow.style.transform = '';
+    }
+  }
+
+  function runCompletionAnimation(track) {
+    if (track.dataset.processPlayDone === 'true') return;
+    if (track.dataset.processPlayRunning === 'true') return;
+
+    track.dataset.processPlayRunning = 'true';
+    const startTime = performance.now();
+
+    function frame(now) {
+      const elapsed = now - startTime;
+      const linear = Math.min(1, elapsed / COMPLETE_MS);
+      const eased = 1 - Math.pow(1 - linear, 3);
+
+      applyProcessTrackProgress(track, eased);
+
+      if (linear < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        track.dataset.processPlayDone = 'true';
+        track.dataset.processPlayRunning = '';
+        applyProcessTrackProgress(track, 1);
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const track = entry.target;
+      io.unobserve(track);
+      runCompletionAnimation(track);
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px 0px 0px'
+  });
+
+  tracks.forEach(track => {
+    io.observe(track);
+    applyProcessTrackProgress(track, 0);
+  });
+
+  window.addEventListener('resize', () => {
+    tracks.forEach(track => {
+      if (track.dataset.processPlayDone === 'true') {
+        applyProcessTrackProgress(track, 1);
+      } else if (track.dataset.processPlayRunning !== 'true') {
+        applyProcessTrackProgress(track, 0);
+      }
+    });
+  });
+}
+
+function initSectionFourScrollAnimation() {
+  const sections = document.querySelectorAll('.process-steps-section, .section-4-placeholder');
+  if (!sections.length) return;
+
+  sections.forEach(sectionFour => {
+    if (sectionFour.closest('.process-scroll-track')) return;
+
+    const observer = new IntersectionObserver((entries, sectionObserver) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        if (sectionFour.classList.contains('animated')) {
+          sectionObserver.unobserve(entry.target);
+          return;
+        }
+
+        const stepCards = sectionFour.querySelectorAll('.process-step, .section-4__content-card');
+        const stepNumbers = sectionFour.querySelectorAll('.step-number, .section-4__timeline-step');
+
+        stepCards.forEach((card, index) => {
+          const delay = index * 0.15;
+          card.style.setProperty('--step-delay', `${delay}s`);
+        });
+
+        stepNumbers.forEach((badge, index) => {
+          const delay = index * 0.15;
+          badge.style.setProperty('--step-delay', `${delay}s`);
+        });
+
+        sectionFour.classList.add('animated');
+        sectionObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.22,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    observer.observe(sectionFour);
+  });
+}
+
 function initSectionFiveScrollAnimation() {
   const sectionFive = document.querySelector('.section-5-placeholder');
   if (!sectionFive) return;
@@ -326,6 +471,55 @@ function initSectionFiveScrollAnimation() {
   });
 
   observer.observe(sectionFive);
+}
+
+function initSectionFiveMobileCarousel() {
+  const mq = window.matchMedia('(max-width: 767px)');
+  document.querySelectorAll('.section-5-placeholder').forEach(section => {
+    const list = section.querySelector('.section-5__review-list');
+    const cards = list ? list.querySelectorAll('.section-5__review-card') : null;
+    const prev = list ? list.querySelector('.section-5__carousel-btn--prev') : null;
+    const next = list ? list.querySelector('.section-5__carousel-btn--next') : null;
+    if (!list || !cards || cards.length < 2 || !prev || !next) return;
+
+    let desktopActiveIndex = [...cards].findIndex(c => c.classList.contains('section-5__review-card--active'));
+    if (desktopActiveIndex < 0) desktopActiveIndex = 0;
+
+    let index = [...cards].findIndex(c => c.classList.contains('section-5__review-card--active'));
+    if (index < 0) index = 0;
+
+    function applyDesktop() {
+      cards.forEach((c, i) => {
+        c.classList.toggle('section-5__review-card--active', i === desktopActiveIndex);
+      });
+    }
+
+    function applyMobile() {
+      const n = cards.length;
+      index = ((index % n) + n) % n;
+      cards.forEach((c, i) => {
+        c.classList.toggle('section-5__review-card--active', i === index);
+      });
+    }
+
+    function sync() {
+      if (mq.matches) applyMobile();
+      else applyDesktop();
+    }
+
+    prev.addEventListener('click', () => {
+      if (!mq.matches) return;
+      index = (index - 1 + cards.length) % cards.length;
+      applyMobile();
+    });
+    next.addEventListener('click', () => {
+      if (!mq.matches) return;
+      index = (index + 1) % cards.length;
+      applyMobile();
+    });
+    mq.addEventListener('change', sync);
+    sync();
+  });
 }
 
 function initSectionSixScrollAnimation() {

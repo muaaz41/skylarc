@@ -82,53 +82,54 @@
       </div>
     </section>
 
-    <section class="section-4-placeholder">
-      <div class="section-4__header">
-        <h2 class="section-4__title">How Selling with Skylarc Works</h2>
-        <p class="section-4__subtitle">We streamline the process, ensuring transparency and efficiency every step of the way.</p>
-      </div>
+    <div class="process-scroll-track">
+      <section class="process-section section-4-placeholder">
+        <div class="process-heading">
+          <h2 class="section-4__title">How Selling with Skylarc Works</h2>
+          <p class="section-4__subtitle">We streamline the process, ensuring transparency and efficiency every step of the way.</p>
+        </div>
 
-      <div class="section-4__image-row">
-        <article class="section-4__image-card">
-          <img src="assets/process.png" alt="Inspect and valuation step image">
-        </article>
-        <article class="section-4__image-card">
-          <img src="assets/process-1.png" alt="Professional listings step image">
-        </article>
-        <article class="section-4__image-card">
-          <img src="assets/process-3.png" alt="Auction management step image">
-        </article>
-        <article class="section-4__image-card">
-          <img src="assets/process-2.png" alt="Payment and settlement step image">
-        </article>
-      </div>
+        <div class="cards-viewport">
+          <div class="cards-strip" id="cardsStrip">
+            <div class="step-card"><img src="assets/process.png" alt="Inspect and valuation step image"></div>
+            <div class="step-card"><img src="assets/process-1.png" alt="Professional listings step image"></div>
+            <div class="step-card"><img src="assets/process-3.png" alt="Auction management step image"></div>
+            <div class="step-card"><img src="assets/4th.png" alt="Payment and settlement step image"></div>
+          </div>
+        </div>
 
-      <div class="section-4__timeline">
-        <span class="section-4__timeline-step section-4__timeline-step--active">01</span>
-        <span class="section-4__timeline-step">02</span>
-        <span class="section-4__timeline-step">03</span>
-        <span class="section-4__timeline-step">04</span>
-      </div>
+        <div class="timeline-row" id="timelineRow">
+          <div class="timeline-track">
+            <div class="timeline-progress" id="timelineBar"></div>
+          </div>
+          <div class="badges-row">
+            <div class="badge-slot"><div class="step-badge" data-index="0">01</div></div>
+            <div class="badge-slot"><div class="step-badge" data-index="1">02</div></div>
+            <div class="badge-slot"><div class="step-badge" data-index="2">03</div></div>
+            <div class="badge-slot"><div class="step-badge" data-index="3">04</div></div>
+          </div>
+        </div>
 
-      <div class="section-4__content-row">
-        <article class="section-4__content-card">
-          <h3>Asset Assessment</h3>
-          <p>We review your assets and create a tailored auction strategy designed to attract the right buyers and maximise bidding activity.</p>
-        </article>
-        <article class="section-4__content-card">
-          <h3>Setup & Professional Listings</h3>
-          <p>Our team photographs, documents, and prepares your assets, creating high-quality listings with clear descriptions and organised catalogues.</p>
-        </article>
-        <article class="section-4__content-card">
-          <h3>Auction Management</h3>
-          <p>We manage the full auction process, including buyer enquiries, marketing exposure, and scheduled viewing opportunities.</p>
-        </article>
-        <article class="section-4__content-card">
-          <h3>Payment &amp; Settlement</h3>
-          <p>Winning bidders pay online and schedule collection while vendors receive transparent reports with sale prices and bidding activity.</p>
-        </article>
-      </div>
-    </section>
+        <div class="text-strip" id="textStrip">
+          <div class="step-text-block" data-index="0">
+            <h3>Asset Assessment</h3>
+            <p>We review your assets and create a tailored auction strategy designed to attract the right buyers and maximise bidding activity.</p>
+          </div>
+          <div class="step-text-block" data-index="1">
+            <h3>Setup & Professional Listings</h3>
+            <p>Our team photographs, documents, and prepares your assets, creating high-quality listings with clear descriptions and organised catalogues.</p>
+          </div>
+          <div class="step-text-block" data-index="2">
+            <h3>Auction Management</h3>
+            <p>We manage the full auction process, including buyer enquiries, marketing exposure, and scheduled viewing opportunities.</p>
+          </div>
+          <div class="step-text-block" data-index="3">
+            <h3>Payment &amp; Settlement</h3>
+            <p>Winning bidders pay online and schedule collection while vendors receive transparent reports with sale prices and bidding activity.</p>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <section class="sell-results-section">
       <div class="sell-results__panel">
@@ -315,24 +316,36 @@
           <img src="assets/client-say.png" alt="Client testimonial photo" class="section-5__client-image">
         </div>
         <div class="section-5__review-list">
+          <button type="button" class="section-5__carousel-btn section-5__carousel-btn--prev" aria-label="Previous testimonial">
+            <img src="assets/Scroll Up Icon.png" alt="" aria-hidden="true">
+          </button>
           <div class="section-5__review-arrow section-5__review-arrow--top">
             <img src="assets/Scroll Up Icon.png" alt="Scroll up reviews">
           </div>
           <article class="section-5__review-card">
-            <span class="section-5__stars">★★★★★</span>
+            <div class="section-5__stars" role="img" aria-label="5 out of 5 stars">
+              <img src="assets/bright-stars.png" alt="" class="section-5__stars-img" decoding="async">
+            </div>
             <p>Thank you Skylarc, very quick and superior service. Highly recommended.</p>
           </article>
           <article class="section-5__review-card section-5__review-card--active">
-            <span class="section-5__stars">★★★★★</span>
-            <p>Sam and the team at Skylarc made an extremely complex process seem easy. The professionalism and integrity they displayed was second to none and we were absolutely astounded by the results they delivered.</p>
+            <div class="section-5__stars" role="img" aria-label="5 out of 5 stars">
+              <img src="assets/bright-stars.png" alt="" class="section-5__stars-img" decoding="async">
+            </div>
+            <p>Sam and the team at Skylarc made an extremely complex process seem easy! The professionalism and integrity they displayed was second to none and we were absolutely astounded by the results they delivered. An absolute breeze to deal with and exceeded all expectations – I would strongly recommend their services.</p>
           </article>
           <article class="section-5__review-card">
-            <span class="section-5__stars">★★★★★</span>
+            <div class="section-5__stars" role="img" aria-label="5 out of 5 stars">
+              <img src="assets/bright-stars.png" alt="" class="section-5__stars-img" decoding="async">
+            </div>
             <p>Thanks Sam, a quick and easy way to exit business, with surprising results.</p>
           </article>
           <div class="section-5__review-arrow section-5__review-arrow--bottom">
             <img src="assets/Scroll Down Icon.png" alt="Scroll down reviews">
           </div>
+          <button type="button" class="section-5__carousel-btn section-5__carousel-btn--next" aria-label="Next testimonial">
+            <img src="assets/Scroll Down Icon.png" alt="" aria-hidden="true">
+          </button>
         </div>
       </div>
     </section>
