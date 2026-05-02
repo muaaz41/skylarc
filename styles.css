@@ -974,12 +974,8 @@
     flex-direction: column;
     align-items: center;
     gap: 0;
-    padding: 10px 48px 14px;
+    padding: 8px 36px 12px;
     box-sizing: border-box;
-  }
-
-  .upcoming-auctions-page .section-5__review-arrow {
-    display: none;
   }
 
   .upcoming-auctions-page .section-5__carousel-btn {
@@ -987,17 +983,17 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
   }
 
   .upcoming-auctions-page .section-5__carousel-btn--prev {
-    left: 4px;
+    left: 0;
     right: auto;
   }
 
   .upcoming-auctions-page .section-5__carousel-btn--next {
-    right: 4px;
+    right: 0;
     left: auto;
   }
 
@@ -1011,7 +1007,7 @@
 
   .upcoming-auctions-page .section-5__review-card {
     display: none;
-    padding: 14px;
+    padding: 14px 12px;
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -1039,7 +1035,7 @@
 
   .upcoming-auctions-page .section-5__review-card p {
     font-size: 13px;
-    line-height: 19px;
+    line-height: 20px;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
@@ -2620,7 +2616,7 @@ main {
   color: #605b5e;
 }
 
-/* Tablet & mobile: single-image carousel (4 slides), same strip animation via JS */
+/* Tablet & small desktop: single-image carousel (4 slides), same strip animation via JS */
 @media (max-width: 1023px) {
   .process-scroll-track .process-section {
     container-type: normal;
@@ -2636,13 +2632,13 @@ main {
     text-align: center;
   }
 
-  .process-scroll-track .cards-viewport {
+  .process-scroll-track .process-strips-desktop .cards-viewport {
     overflow: hidden;
     width: 100%;
     border-radius: 12px;
   }
 
-  .process-scroll-track .cards-strip {
+  .process-scroll-track .process-strips-desktop .cards-strip {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -2652,7 +2648,7 @@ main {
     will-change: transform;
   }
 
-  .process-scroll-track .step-card {
+  .process-scroll-track .process-strips-desktop .step-card {
     flex: 0 0 25%;
     width: 25%;
     max-width: none;
@@ -2661,15 +2657,15 @@ main {
     border-radius: 0;
   }
 
-  .process-scroll-track .step-card:first-child {
+  .process-scroll-track .process-strips-desktop .step-card:first-child {
     border-radius: 12px 0 0 12px;
   }
 
-  .process-scroll-track .step-card:last-child {
+  .process-scroll-track .process-strips-desktop .step-card:last-child {
     border-radius: 0 12px 12px 0;
   }
 
-  .process-scroll-track .timeline-row {
+  .process-scroll-track .process-strips-desktop .timeline-row {
     width: 100% !important;
     max-width: 100%;
     margin-top: 16px;
@@ -2677,12 +2673,12 @@ main {
     will-change: auto;
   }
 
-  .process-scroll-track .timeline-track {
+  .process-scroll-track .process-strips-desktop .timeline-track {
     min-width: 0;
     width: 100%;
   }
 
-  .process-scroll-track .badges-row {
+  .process-scroll-track .process-strips-desktop .badges-row {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -2694,14 +2690,14 @@ main {
     padding: 0 2px;
   }
 
-  .process-scroll-track .badge-slot {
+  .process-scroll-track .process-strips-desktop .badge-slot {
     flex: 1;
     display: flex;
     justify-content: center;
     min-width: 0;
   }
 
-  .process-scroll-track .text-strip {
+  .process-scroll-track .process-strips-desktop .text-strip {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -2712,7 +2708,7 @@ main {
     will-change: transform;
   }
 
-  .process-scroll-track .step-text-block {
+  .process-scroll-track .process-strips-desktop .step-text-block {
     flex: 0 0 25%;
     width: 25%;
     max-width: none;
@@ -2721,12 +2717,12 @@ main {
     padding-right: 8px;
   }
 
-  .process-scroll-track .step-text-block h3 {
+  .process-scroll-track .process-strips-desktop .step-text-block h3 {
     font-size: 20px;
     line-height: 28px;
   }
 
-  .process-scroll-track .step-text-block p {
+  .process-scroll-track .process-strips-desktop .step-text-block p {
     font-size: 13px;
     line-height: 19px;
   }
@@ -2738,7 +2734,7 @@ main {
     padding-bottom: 24px;
   }
 
-  .process-scroll-track .step-card {
+  .process-scroll-track .process-strips-desktop .step-card {
     height: 168px;
   }
 
@@ -2752,6 +2748,122 @@ main {
     font-size: 14px;
     line-height: 21px;
     height: auto;
+  }
+
+  .process-scroll-track .process-strips-desktop {
+    display: none !important;
+  }
+
+  .process-scroll-track .process-mobile-stack {
+    --process-p: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 8px;
+    padding-bottom: 8px;
+    z-index: 0;
+  }
+
+  .process-scroll-track .process-mobile-stack__line {
+    position: absolute;
+    left: 21px;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    border-radius: 3px;
+    background: rgba(255, 102, 0, 0.22);
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .process-scroll-track .process-mobile-stack__line-fill {
+    display: block;
+    width: 100%;
+    height: calc(var(--process-p, 0) * 100%);
+    background: #ff6600;
+    border-radius: 3px;
+    transform-origin: top center;
+  }
+
+  .process-scroll-track .process-mobile-step {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 0 14px;
+    align-items: start;
+  }
+
+  .process-scroll-track .process-mobile-step__rail {
+    display: flex;
+    justify-content: center;
+    padding-top: 2px;
+  }
+
+  .process-scroll-track .process-mobile-step__content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-card {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+    height: auto !important;
+    min-height: 160px;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px !important;
+    overflow: hidden;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-card:first-child,
+  .process-scroll-track .process-mobile-stack .step-card:last-child {
+    border-radius: 12px !important;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-text-block {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-right: 0 !important;
+    margin-top: 12px;
+    box-sizing: border-box;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-text-block h3 {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-text-block p {
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-badge--mobile {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.35;
+    transform: scale(0.92);
+    border-width: 1px;
+  }
+
+  .process-scroll-track .process-mobile-stack .step-badge--mobile.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 768px) {
+  .process-scroll-track .process-mobile-stack {
+    display: none !important;
   }
 }
 
@@ -2865,21 +2977,6 @@ main {
   justify-content: center;
   align-self: stretch;
   box-sizing: border-box;
-}
-
-.section-5__review-arrow {
-  width: 24px;
-  height: 24px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.section-5__review-arrow img {
-  width: 24px;
-  height: 24px;
-  display: block;
 }
 
 .section-5__carousel-btn {
@@ -11819,13 +11916,9 @@ main.resources-page {
     flex-direction: column;
     align-items: center;
     gap: 0;
-    padding: 10px 48px 14px;
+    padding: 8px 36px 12px;
     box-sizing: border-box;
     order: 0;
-  }
-
-  .section-5__review-arrow {
-    display: none;
   }
 
   .section-5__carousel-btn {
@@ -11833,17 +11926,17 @@ main.resources-page {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
   }
 
   .section-5__carousel-btn--prev {
-    left: 4px;
+    left: 0;
     right: auto;
   }
 
   .section-5__carousel-btn--next {
-    right: 4px;
+    right: 0;
     left: auto;
   }
 
@@ -11857,7 +11950,7 @@ main.resources-page {
 
   .section-5__review-card {
     display: none;
-    padding: 16px;
+    padding: 14px 12px;
     border-radius: 12px;
     width: 100%;
     max-width: none;
@@ -11887,7 +11980,7 @@ main.resources-page {
 
   .section-5__review-card p {
     font-size: 13px;
-    line-height: 19px;
+    line-height: 20px;
     word-break: normal;
     overflow-wrap: break-word;
     text-align: center;

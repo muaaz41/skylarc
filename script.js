@@ -327,18 +327,27 @@ function initProcessSectionScroll() {
     const timelineRow = section.querySelector('#timelineRow') || section.querySelector('.timeline-row');
     const progressEl = section.querySelector('#timelineBar') || section.querySelector('.timeline-progress');
     const badges = section.querySelectorAll('.step-badge');
+    const mobileStack = section.querySelector('.process-mobile-stack');
 
     const clamped = Math.max(0, Math.min(1, p));
+    const isMobileVertical = window.matchMedia('(max-width: 767px)').matches;
 
     if (progressEl) progressEl.style.width = `${clamped * 100}%`;
+    if (mobileStack) mobileStack.style.setProperty('--process-p', String(clamped));
 
-    badges.forEach((badge, i) => {
+    badges.forEach(badge => {
+      const i = Number(badge.getAttribute('data-index'));
+      if (Number.isNaN(i)) return;
       const t = thresholds[i] ?? 1;
       const active = i === 0 ? clamped > 0 : clamped >= t;
       badge.classList.toggle('active', active);
     });
 
-    if (useDesktop) {
+    if (isMobileVertical) {
+      if (cardsStrip) cardsStrip.style.transform = '';
+      if (textStrip) textStrip.style.transform = '';
+      if (timelineRow) timelineRow.style.transform = '';
+    } else if (useDesktop) {
       const firstCard = cardsStrip && cardsStrip.querySelector('.step-card');
       const halfCard = firstCard ? firstCard.offsetWidth / 2 : 0;
       const shiftPx = clamped * halfCard;
