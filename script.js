@@ -4,9 +4,103 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', function() {
+  initNavbarIntroAnimation();
+  initAuctionSingleTopIntroAnimation();
   initNavigation();
   initPastAuctionFilters();
+  initSectionOneScrollAnimation();
+  initSectionTwoScrollAnimation();
+  initSectionThreeScrollAnimation();
+  initSectionFiveScrollAnimation();
+  initSectionSixScrollAnimation();
+  initSectionSevenScrollAnimation();
+  initSectionEightScrollAnimation();
+  initFooterScrollAnimation();
+  initSellTrustedScrollAnimation();
+  initSellResultsScrollAnimation();
+  initSellFaqScrollAnimation();
+  initSellPricingScrollAnimation();
+  initSellContactScrollAnimation();
+  initContactDetailsScrollAnimation();
+  initPickupSectionScrollAnimation();
+  initAboutMissionScrollAnimation();
+  initAboutDifferentScrollAnimation();
+  initAboutTeamScrollAnimation();
+  initCaseFilterScrollAnimation();
+  initAuctionsListingIntroAnimation();
+  initAuctionsCardsGridAnimation();
+  initAuctionsResultsAnimation();
+  initAuctionsDrivingAnimation();
+  initAuctionSingleSpecAnimation();
+  initAuctionSinglePickupAnimation();
 });
+
+function initAuctionSingleTopIntroAnimation() {
+  const pageNavbar = document.querySelector('.auction-single-page .auction-single-hero .navbar');
+  const topBanner = document.querySelector('.auction-single-page .auction-single-banner');
+  const topGallery = document.querySelector('.auction-single-page .auction-single-top');
+  if (!pageNavbar || !topBanner || !topGallery) return;
+
+  pageNavbar.classList.add('auction-single-top-intro--ready');
+  topBanner.classList.add('auction-single-top-intro--ready');
+  topGallery.classList.add('auction-single-top-intro--ready');
+
+  const copyElements = topBanner.querySelectorAll('.auction-single-breadcrumb, h1, p');
+  copyElements.forEach((element, index) => {
+    const delay = 0.18 + index * 0.12;
+    element.style.setProperty('--auction-single-copy-delay', `${delay}s`);
+  });
+
+  const ctaButton = topBanner.querySelector('.auction-single-banner__cta');
+  const bidImageWrap = topBanner.querySelector('.auction-single-banner__bid');
+  if (ctaButton) ctaButton.style.setProperty('--auction-single-bottom-delay', '0.88s');
+  if (bidImageWrap) bidImageWrap.style.setProperty('--auction-single-bottom-delay', '1s');
+  const mainImage = topGallery.querySelector('.auction-single-main-image');
+  const thumbRow = topGallery.querySelector('.auction-single-thumb-row');
+  if (mainImage) mainImage.style.setProperty('--auction-single-gallery-delay', '1.22s');
+  if (thumbRow) thumbRow.style.setProperty('--auction-single-gallery-delay', '1.34s');
+
+  void pageNavbar.offsetWidth;
+  void topBanner.offsetWidth;
+  void topGallery.offsetWidth;
+  document.documentElement.classList.remove('auction-single-intro-preload');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      pageNavbar.classList.add('auction-single-top-intro--in');
+      topBanner.classList.add('auction-single-top-intro--in');
+      topGallery.classList.add('auction-single-top-intro--in');
+    });
+  });
+
+  setTimeout(() => {
+    pageNavbar.classList.add('auction-single-top-intro--in');
+    topBanner.classList.add('auction-single-top-intro--in');
+    topGallery.classList.add('auction-single-top-intro--in');
+  }, 180);
+}
+
+function initNavbarIntroAnimation() {
+  const navbars = document.querySelectorAll('.navbar');
+  if (!navbars.length) return;
+
+  navbars.forEach(navbar => {
+    navbar.classList.add('navbar--animate-ready');
+
+    const navItems = navbar.querySelectorAll('.navbar__list li');
+    navItems.forEach((item, index) => {
+      const delay = 0.16 + index * 0.08;
+      item.style.setProperty('--nav-item-delay', `${delay}s`);
+    });
+
+    // Force layout so initial state is painted before animation starts.
+    void navbar.offsetWidth;
+
+    setTimeout(() => {
+      navbar.classList.add('navbar--animate-in');
+    }, 80);
+  });
+}
 
 /**
  * Initialize navigation with mobile menu toggle and active link highlighting
@@ -90,6 +184,732 @@ function initPastAuctionFilters() {
 
   window.addEventListener('resize', syncToolbarState);
   syncToolbarState();
+}
+
+function initSectionOneScrollAnimation() {
+  const sectionOne = document.querySelector('.section-1');
+  if (!sectionOne) return;
+
+  sectionOne.classList.add('section-1--animate-ready');
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      sectionOne.classList.add('section-1--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -60px 0px'
+  });
+
+  observer.observe(sectionOne);
+}
+
+function initSectionTwoScrollAnimation() {
+  const sectionTwo = document.querySelector('.section-2');
+  if (!sectionTwo) return;
+
+  const statCards = sectionTwo.querySelectorAll('.section-2__stat-card');
+  sectionTwo.classList.add('section-2--animate-ready');
+
+  statCards.forEach((card, index) => {
+    const delay = 0.2 + index * 0.12;
+    card.style.setProperty('--card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      sectionTwo.classList.add('section-2--in-view');
+      animateSectionTwoCounters(sectionTwo);
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.22,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(sectionTwo);
+}
+
+function animateSectionTwoCounters(sectionTwo) {
+  const statNumbers = sectionTwo.querySelectorAll('.section-2__stat-number[data-count-target]');
+  if (!statNumbers.length) return;
+
+  statNumbers.forEach(statNumber => {
+    const card = statNumber.closest('.section-2__stat-card');
+    const cardDelay = card ? parseFloat(card.style.getPropertyValue('--card-delay')) || 0 : 0;
+    const startDelay = (cardDelay + 0.55) * 1000;
+
+    setTimeout(() => animateCounterValue(statNumber), startDelay);
+  });
+}
+
+function animateCounterValue(element) {
+  if (element.dataset.countAnimated === 'true') return;
+  element.dataset.countAnimated = 'true';
+
+  const target = parseFloat(element.dataset.countTarget || '0');
+  const prefix = element.dataset.countPrefix || '';
+  const suffix = element.dataset.countSuffix || '';
+  const decimals = parseInt(element.dataset.countDecimals || '0', 10);
+  const duration = 1500;
+  const startTime = performance.now();
+
+  const formatValue = value => new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  }).format(value);
+
+  const tick = now => {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const easedProgress = 1 - Math.pow(1 - progress, 3);
+    const currentValue = target * easedProgress;
+    const displayValue = decimals > 0 ? currentValue : Math.round(currentValue);
+
+    element.textContent = `${prefix}${formatValue(displayValue)}${suffix}`;
+
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    }
+  };
+
+  requestAnimationFrame(tick);
+}
+
+function initSectionThreeScrollAnimation() {
+  const sectionThree = document.querySelector('.section-3');
+  if (!sectionThree) return;
+
+  const cards = sectionThree.querySelectorAll('.section-3__card');
+  sectionThree.classList.add('section-3--animate-ready');
+
+  cards.forEach((card, index) => {
+    const delay = 0.75 + index * 0.16;
+    card.style.setProperty('--card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      sectionThree.classList.add('section-3--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.18,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(sectionThree);
+}
+
+function initSectionFiveScrollAnimation() {
+  const sectionFive = document.querySelector('.section-5-placeholder');
+  if (!sectionFive) return;
+
+  sectionFive.classList.add('section-5--animate-ready');
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      sectionFive.classList.add('section-5--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(sectionFive);
+}
+
+function initSectionSixScrollAnimation() {
+  const sectionSix = document.querySelector('.section-6-industries');
+  if (!sectionSix) return;
+
+  const cards = sectionSix.querySelectorAll('.industry-card');
+  sectionSix.classList.add('section-6--animate-ready');
+
+  cards.forEach((card, index) => {
+    const delay = 0.22 + index * 0.14;
+    card.style.setProperty('--industry-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      sectionSix.classList.add('section-6--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(sectionSix);
+}
+
+function initSectionSevenScrollAnimation() {
+  const sectionSeven = document.querySelector('.section-7-newsletter');
+  if (!sectionSeven) return;
+
+  sectionSeven.classList.add('section-7--animate-ready');
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      sectionSeven.classList.add('section-7--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(sectionSeven);
+}
+
+function initSectionEightScrollAnimation() {
+  const sectionEightBlocks = document.querySelectorAll('.section-8-cta');
+  if (!sectionEightBlocks.length) return;
+
+  sectionEightBlocks.forEach(sectionEight => {
+    sectionEight.classList.add('section-8--animate-ready');
+
+    const observer = new IntersectionObserver((entries, sectionObserver) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        sectionEight.classList.add('section-8--in-view');
+        sectionObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.2,
+      rootMargin: '0px 0px -80px 0px'
+    });
+
+    observer.observe(sectionEight);
+  });
+}
+
+function initFooterScrollAnimation() {
+  const footers = document.querySelectorAll('.footer');
+  if (!footers.length) return;
+
+  footers.forEach(footer => {
+    footer.classList.add('footer--animate-ready');
+
+    const observer = new IntersectionObserver((entries, footerObserver) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        footer.classList.add('footer--in-view');
+        footerObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    observer.observe(footer);
+  });
+}
+
+function initSellTrustedScrollAnimation() {
+  const section = document.querySelector('.sell-trusted-section');
+  if (!section) return;
+
+  section.classList.add('sell-trusted--animate-ready');
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('sell-trusted--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initSellResultsScrollAnimation() {
+  const section = document.querySelector('.sell-results-section');
+  if (!section) return;
+
+  const statNumbers = section.querySelectorAll('.sell-results__stat-item h3[data-count-target]');
+  section.classList.add('sell-results--animate-ready');
+
+  statNumbers.forEach((stat, index) => {
+    const delay = 0.5 + index * 0.16;
+    stat.style.setProperty('--result-stat-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('sell-results--in-view');
+
+      statNumbers.forEach((stat, index) => {
+        const countDelay = 760 + index * 180;
+        setTimeout(() => animateCounterValue(stat), countDelay);
+      });
+
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.22,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initSellFaqScrollAnimation() {
+  const section = document.querySelector('.sell-faq-section');
+  if (!section) return;
+
+  const faqRows = section.querySelectorAll('.sell-faq__list details');
+  section.classList.add('sell-faq--animate-ready');
+
+  faqRows.forEach((row, index) => {
+    const delay = 0.32 + index * 0.08;
+    row.style.setProperty('--faq-row-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('sell-faq--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.18,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initSellPricingScrollAnimation() {
+  const section = document.querySelector('.sell-pricing-section');
+  if (!section) return;
+
+  const lines = section.querySelectorAll('.sell-pricing__list li');
+  section.classList.add('sell-pricing--animate-ready');
+
+  lines.forEach((line, index) => {
+    const delay = 0.34 + index * 0.08;
+    line.style.setProperty('--pricing-line-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('sell-pricing--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.18,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initSellContactScrollAnimation() {
+  const section = document.querySelector('.sell-contact-section');
+  if (!section) return;
+
+  section.classList.add('sell-contact--animate-ready');
+
+  const leftSequence = section.querySelectorAll(
+    '.sell-contact__title, .sell-contact__subtitle, .sell-contact__form input'
+  );
+
+  leftSequence.forEach((el, index) => {
+    const delay = 0.12 + index * 0.1;
+    el.style.setProperty('--contact-line-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('sell-contact--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initContactDetailsScrollAnimation() {
+  const section = document.querySelector('.contact-page .contact-details-section');
+  if (!section) return;
+
+  section.classList.add('contact-details--animate-ready');
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('contact-details--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initPickupSectionScrollAnimation() {
+  const section = document.querySelector('.contact-page .pickup-section');
+  if (!section) return;
+
+  section.classList.add('pickup-section--animate-ready');
+
+  const rightLines = section.querySelectorAll('.pickup-content h2, .pickup-content p, .pickup-content .link-orange, .pickup-form input');
+  rightLines.forEach((line, index) => {
+    const delay = 0.16 + index * 0.1;
+    line.style.setProperty('--pickup-line-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('pickup-section--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAboutMissionScrollAnimation() {
+  const section = document.querySelector('.about-mission-feature');
+  if (!section) return;
+
+  section.classList.add('about-mission--animate-ready');
+
+  const rightLines = section.querySelectorAll('.about-mission-feature__text p, .about-mission-feature__text li');
+  rightLines.forEach((line, index) => {
+    const delay = 0.3 + index * 0.1;
+    line.style.setProperty('--mission-line-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('about-mission--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAboutDifferentScrollAnimation() {
+  const section = document.querySelector('.about-different-section');
+  if (!section) return;
+
+  section.classList.add('about-different--animate-ready');
+
+  const rightTextLines = section.querySelectorAll('.about-different__content h2, .about-different__content p');
+  rightTextLines.forEach((line, index) => {
+    const delay = 0.18 + index * 0.12;
+    line.style.setProperty('--different-text-delay', `${delay}s`);
+  });
+
+  const bottomLines = section.querySelectorAll('.about-different__content ul li, .about-different__btn');
+  bottomLines.forEach((line, index) => {
+    const delay = 0.44 + index * 0.1;
+    line.style.setProperty('--different-bottom-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('about-different--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAboutTeamScrollAnimation() {
+  const section = document.querySelector('.about-block--team');
+  if (!section) return;
+
+  section.classList.add('about-team--animate-ready');
+
+  const cards = section.querySelectorAll('.about-team-card');
+  cards.forEach((card, index) => {
+    let delay = 0.58;
+    if (index === 1) delay = 0.28;
+    if (index === 2) delay = 0.74;
+    card.style.setProperty('--team-card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('about-team--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initCaseFilterScrollAnimation() {
+  const section = document.querySelector('.case-filter-section');
+  if (!section) return;
+
+  section.classList.add('case-filter--animate-ready');
+
+  const cards = section.querySelectorAll('.industry-card');
+  cards.forEach((card, index) => {
+    const delay = 0.24 + index * 0.08;
+    card.style.setProperty('--case-card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('case-filter--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.16,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAuctionsListingIntroAnimation() {
+  const section = document.querySelector('.auctions-page .auctions-listing-section');
+  if (!section) return;
+
+  section.classList.add('auctions-listing--animate-ready');
+
+  const tabs = section.querySelectorAll('.auctions-market-overlay__top .auctions-market-overlay__tab');
+  tabs.forEach((tab, index) => {
+    const delay = 0.1 + index * 0.08;
+    tab.style.setProperty('--auction-filter-delay', `${delay}s`);
+  });
+
+  const searchRow = section.querySelector('.auctions-market-overlay__search-row');
+  if (searchRow) {
+    searchRow.style.setProperty('--auction-filter-delay', `${0.16 + tabs.length * 0.08}s`);
+  }
+
+  const categories = section.querySelectorAll('.auctions-market-overlay__grid span');
+  categories.forEach((item, index) => {
+    const delay = 0.62 + index * 0.035;
+    item.style.setProperty('--auction-category-delay', `${delay}s`);
+  });
+
+  // Ensure initial right-offset state is painted before in-view class.
+  void section.offsetWidth;
+
+  // Start filter/tabs intro with hero load timing (no scroll wait).
+  setTimeout(() => {
+    section.classList.add('auctions-listing--in-view');
+  }, 420);
+}
+
+function initAuctionsCardsGridAnimation() {
+  const grid = document.querySelector('.auctions-page .auctions-cards-grid');
+  if (!grid) return;
+
+  const cards = grid.querySelectorAll('.section-3__card');
+  grid.classList.add('auctions-cards-grid--animate-ready');
+
+  cards.forEach((card, index) => {
+    const delay = 0.16 + index * 0.08;
+    card.style.setProperty('--auction-card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, gridObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      grid.classList.add('auctions-cards-grid--in-view');
+      gridObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(grid);
+}
+
+function initAuctionsResultsAnimation() {
+  const section = document.querySelector('.auctions-page .auctions-results-section');
+  if (!section) return;
+
+  section.classList.add('auctions-results--animate-ready');
+
+  const rightTextBlocks = section.querySelectorAll('.auctions-results__text article');
+  rightTextBlocks.forEach((item, index) => {
+    const delay = 0.28 + index * 0.12;
+    item.style.setProperty('--auction-result-text-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('auctions-results--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.18,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAuctionsDrivingAnimation() {
+  const section = document.querySelector('.auctions-page .auctions-driving-section');
+  if (!section) return;
+
+  section.classList.add('auctions-driving--animate-ready');
+
+  const stats = section.querySelectorAll('.auctions-driving__stat');
+  stats.forEach((stat, index) => {
+    const lineDelay = 0.22 + index * 0.14;
+    const numberDelay = 0.34 + index * 0.14;
+    stat.style.setProperty('--driving-line-delay', `${lineDelay}s`);
+    stat.style.setProperty('--driving-number-delay', `${numberDelay}s`);
+  });
+
+  const counterNumbers = section.querySelectorAll('.auctions-driving__stat h3[data-count-target]');
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('auctions-driving--in-view');
+
+      counterNumbers.forEach((el, index) => {
+        const startDelay = 520 + index * 180;
+        setTimeout(() => animateCounterValue(el), startDelay);
+      });
+
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAuctionSingleSpecAnimation() {
+  const section = document.querySelector('.auction-single-page .auction-single-spec-section');
+  if (!section) return;
+
+  section.classList.add('auction-single-spec--animate-ready');
+
+  const metrics = section.querySelectorAll('.auction-single-spec-metrics article');
+  metrics.forEach((item, index) => {
+    const delay = 0.24 + index * 0.1;
+    item.style.setProperty('--spec-metric-delay', `${delay}s`);
+  });
+
+  const rightHeading = section.querySelector('.auction-single-spec-right h3');
+  const rightParagraph = section.querySelector('.auction-single-spec-right > p');
+  if (rightHeading) rightHeading.style.setProperty('--spec-right-delay', '0.2s');
+  if (rightParagraph) rightParagraph.style.setProperty('--spec-right-delay', '0.32s');
+
+  const rightLines = section.querySelectorAll('.auction-single-spec-right li');
+  rightLines.forEach((line, index) => {
+    const delay = 0.42 + index * 0.09;
+    line.style.setProperty('--spec-line-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('auction-single-spec--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAuctionSinglePickupAnimation() {
+  const section = document.querySelector('.auction-single-page .auction-single-pickup-section');
+  if (!section) return;
+
+  section.classList.add('auction-single-pickup--animate-ready');
+
+  const cards = section.querySelectorAll('.auction-single-pickup-card');
+  cards.forEach((card, index) => {
+    const delay = 0.3 + index * 0.14;
+    card.style.setProperty('--auction-single-pickup-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries, sectionObserver) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      section.classList.add('auction-single-pickup--in-view');
+      sectionObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -70px 0px'
+  });
+
+  observer.observe(section);
 }
 
 /**

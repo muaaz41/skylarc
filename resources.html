@@ -48,8 +48,12 @@
             </div>
           </header>
           <div class="rs-hero-copy">
-            <h1>Resources &amp; Support</h1>
-            <p>Everything you need to buy and sell with confidence.</p>
+            <h1>
+              <span class="rs-hero-line rs-hero-line--1">Resources &amp; Support</span>
+            </h1>
+            <p>
+              <span class="rs-hero-line rs-hero-line--2">Everything you need to buy and sell with confidence.</span>
+            </p>
           </div>
         </div>
       </section>
@@ -154,7 +158,7 @@
               <ul class="footer__list">
                 <li><a href="sell.html" class="footer__link">Sell With Skylarc</a></li>
                 <li><a href="auctions.html" class="footer__link">Auctions</a></li>
-                <li><a href="#" class="footer__link">Case Studies</a></li>
+                <li><a href="case-studies.html" class="footer__link">Case Studies</a></li>
                 <li><a href="about.html" class="footer__link">About</a></li>
                 <li><a href="resources.html" class="footer__link">Resources</a></li>
               </ul>
@@ -235,6 +239,7 @@
       };
 
       const defaultOpenIndex = { vendor: 1, buyer: 2 };
+      const faqShell = document.querySelector(".rs-faq-shell");
       const list = document.getElementById("faqList");
       const tabs = document.querySelectorAll("[data-faq-type]");
 
@@ -267,6 +272,64 @@
             });
           });
         });
+
+        detailsItems.forEach((detail, index) => {
+          const rowDelay = 0.14 + index * 0.08;
+          detail.style.setProperty("--rs-faq-row-delay", `${rowDelay}s`);
+        });
+
+        list.classList.add("rs-faq-list--animate-ready");
+
+        if (faqShell && faqShell.classList.contains("rs-faq--in-view")) {
+          list.classList.remove("rs-faq-list--animate-in");
+          requestAnimationFrame(() => {
+            list.classList.add("rs-faq-list--animate-in");
+          });
+        }
+      }
+
+      if (faqShell) {
+        faqShell.classList.add("rs-faq--animate-ready");
+        const faqObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            faqShell.classList.add("rs-faq--in-view");
+            list.classList.remove("rs-faq-list--animate-in");
+            requestAnimationFrame(() => {
+              list.classList.add("rs-faq-list--animate-in");
+            });
+            observer.unobserve(entry.target);
+          });
+        }, {
+          threshold: 0.2,
+          rootMargin: "0px 0px -70px 0px"
+        });
+
+        faqObserver.observe(faqShell);
+      }
+
+      const featureSection = document.querySelector(".rs-feature");
+      if (featureSection) {
+        featureSection.classList.add("rs-feature--animate-ready");
+
+        const miniCards = featureSection.querySelectorAll(".mini-card");
+        miniCards.forEach((card, index) => {
+          const delay = 0.28 + index * 0.12;
+          card.style.setProperty("--rs-mini-delay", `${delay}s`);
+        });
+
+        const featureObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            featureSection.classList.add("rs-feature--in-view");
+            observer.unobserve(entry.target);
+          });
+        }, {
+          threshold: 0.2,
+          rootMargin: "0px 0px -80px 0px"
+        });
+
+        featureObserver.observe(featureSection);
       }
 
       tabs.forEach((tab) => {
