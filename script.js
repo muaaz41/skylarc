@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
   initUpcomingLiveAuctionCarouselDelays();
   initNavbarIntroAnimation();
   initAuctionSingleTopIntroAnimation();
+  initCaseStudyInternalHeroScrollAnimation();
+  initCaseStudyChallengeScrollAnimation();
+  initCaseStudyProcessScrollAnimation();
+  initCaseStudyMarketingScrollAnimation();
+  initCaseStudyResultsScrollAnimation();
+  initCaseStudyMediaLinksScrollAnimation();
   initNavigation();
   initPastAuctionFilters();
   initSectionOneScrollAnimation();
@@ -109,6 +115,188 @@ function initAuctionSingleTopIntroAnimation() {
     topBanner.classList.add('auction-single-top-intro--in');
     topGallery.classList.add('auction-single-top-intro--in');
   }, 180);
+}
+
+/**
+ * Case study internal: hero copy slides in from the right, stats rise from below,
+ * main gallery image rises when scrolled into view, then thumb strip when scrolled further.
+ */
+function initCaseStudyInternalHeroScrollAnimation() {
+  const heroRoot = document.body.classList.contains('case-study-internal-page')
+    ? 'case-study-internal-page'
+    : document.body.classList.contains('case-study-single-page')
+      ? 'case-study-single-page'
+      : null;
+  if (!heroRoot) return;
+
+  const banner = document.querySelector(`.${heroRoot} .auction-single-banner`);
+  const mainImage = document.querySelector(`.${heroRoot} .auction-single-main-image`);
+  const thumbRow = document.querySelector(`.${heroRoot} .auction-single-thumb-row`);
+
+  const observeOnce = (target, onInView, options) => {
+    if (!target) return null;
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        onInView();
+        obs.disconnect();
+      });
+    }, options);
+    observer.observe(target);
+    return observer;
+  };
+
+  if (banner) {
+    banner.classList.add('case-study-hero-banner--ready');
+    observeOnce(
+      banner,
+      () => banner.classList.add('case-study-hero-banner--in'),
+      { threshold: 0.14, rootMargin: '0px 0px -12% 0px' }
+    );
+  }
+
+  if (mainImage) {
+    mainImage.classList.add('case-study-hero-main--ready');
+    observeOnce(
+      mainImage,
+      () => mainImage.classList.add('case-study-hero-main--in'),
+      { threshold: 0.12, rootMargin: '0px 0px -10% 0px' }
+    );
+  }
+
+  if (thumbRow) {
+    thumbRow.classList.add('case-study-hero-thumb--ready');
+    observeOnce(
+      thumbRow,
+      () => thumbRow.classList.add('case-study-hero-thumb--in'),
+      { threshold: 0.16, rootMargin: '0px 0px -6% 0px' }
+    );
+  }
+}
+
+/** “The Challenge” — image from left, copy from bottom-right (case study pages). */
+function initCaseStudyChallengeScrollAnimation() {
+  const section = document.querySelector('.case-study-challenge-section');
+  if (!section) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    section.classList.add('case-study-challenge--in-view');
+    return;
+  }
+
+  section.classList.add('case-study-challenge--ready');
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('case-study-challenge--in-view');
+        obs.disconnect();
+      });
+    },
+    { threshold: 0.14, rootMargin: '0px 0px -10% 0px' }
+  );
+  observer.observe(section);
+}
+
+/** “The Process” — text/image from right, tender card from left. */
+function initCaseStudyProcessScrollAnimation() {
+  const section = document.querySelector('.case-study-process-section');
+  if (!section) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    section.classList.add('case-study-process--in-view');
+    return;
+  }
+
+  section.classList.add('case-study-process--ready');
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('case-study-process--in-view');
+        obs.disconnect();
+      });
+    },
+    { threshold: 0.14, rootMargin: '0px 0px -10% 0px' }
+  );
+  observer.observe(section);
+}
+
+/** Marketing — image from right; heading then paragraphs from left (stagger). */
+function initCaseStudyMarketingScrollAnimation() {
+  const section = document.querySelector('.case-study-marketing-section');
+  if (!section) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    section.classList.add('case-study-marketing--in-view');
+    return;
+  }
+
+  section.classList.add('case-study-marketing--ready');
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('case-study-marketing--in-view');
+        obs.disconnect();
+      });
+    },
+    { threshold: 0.14, rootMargin: '0px 0px -10% 0px' }
+  );
+  observer.observe(section);
+}
+
+/** Results — image from left; heading then paragraphs from right (stagger). */
+function initCaseStudyResultsScrollAnimation() {
+  const section = document.querySelector('.case-study-results-section');
+  if (!section) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    section.classList.add('case-study-results--in-view');
+    return;
+  }
+
+  section.classList.add('case-study-results--ready');
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('case-study-results--in-view');
+        obs.disconnect();
+      });
+    },
+    { threshold: 0.14, rootMargin: '0px 0px -10% 0px' }
+  );
+  observer.observe(section);
+}
+
+/** Media Links — title from left; link grid from bottom-right. */
+function initCaseStudyMediaLinksScrollAnimation() {
+  const section = document.querySelector('.case-study-media-links-section');
+  if (!section) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    section.classList.add('case-study-media-links--in-view');
+    return;
+  }
+
+  section.classList.add('case-study-media-links--ready');
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('case-study-media-links--in-view');
+        obs.disconnect();
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -10% 0px' }
+  );
+  observer.observe(section);
 }
 
 function initNavbarIntroAnimation() {
