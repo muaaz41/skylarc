@@ -39,11 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
   initUpcomingPastAuctionAnimation();
   initCaseFilterScrollAnimation();
   initAuctionsListingIntroAnimation();
+  initAuctionsMarketTabs();
   initAuctionsCardsGridAnimation();
   initAuctionsResultsAnimation();
   initAuctionsDrivingAnimation();
   initAuctionSingleSpecAnimation();
   initAuctionSinglePickupAnimation();
+  initPaginationControls();
 });
 
 /** Sync “Auction” live cards stagger to category line animation end (upcoming auctions page only). */
@@ -56,7 +58,7 @@ function initUpcomingLiveAuctionCarouselDelays() {
   if (!section || !grid || !header) return;
 
   const categoryEls = section.querySelectorAll(
-    '.auctions-market-overlay__label, .auctions-market-overlay__grid span'
+    '.auctions-market-overlay__label, .auctions-market-overlay__grid > *'
   );
   const n = categoryEls.length;
   const base = n > 0 ? 1.02 + (n - 1) * 0.08 + 0.72 + 0.12 : 2.82;
@@ -506,6 +508,78 @@ function animateSectionTwoCounters(sectionTwo) {
   });
 }
 
+/** Prev/next + page buttons for `.auctions-pagination` (auctions, case studies, upcoming). */
+function initPaginationControls() {
+  document.querySelectorAll('.auctions-pagination').forEach((root) => {
+    if (root.dataset.paginationBound === '1') return;
+
+    const pageButtons = root.querySelectorAll('.auctions-pagination__page[data-page]');
+    if (!pageButtons.length) return;
+
+    root.dataset.paginationBound = '1';
+
+    const prev = root.querySelector('.auctions-pagination__nav--prev');
+    const next = root.querySelector('.auctions-pagination__nav--next');
+
+    function getPageNumbers() {
+      return Array.from(pageButtons)
+        .map((b) => parseInt(b.getAttribute('data-page'), 10))
+        .filter((n) => Number.isFinite(n))
+        .sort((a, b) => a - b);
+    }
+
+    function getCurrentPage() {
+      const active = root.querySelector('.auctions-pagination__page--active[data-page]');
+      if (active) return parseInt(active.getAttribute('data-page'), 10);
+      const nums = getPageNumbers();
+      return nums.length ? nums[0] : 1;
+    }
+
+    function setActivePage(num) {
+      const nums = getPageNumbers();
+      if (!nums.includes(num)) return;
+      pageButtons.forEach((btn) => {
+        const p = parseInt(btn.getAttribute('data-page'), 10);
+        const on = p === num;
+        btn.classList.toggle('auctions-pagination__page--active', on);
+        if (on) btn.setAttribute('aria-current', 'page');
+        else btn.removeAttribute('aria-current');
+      });
+      const min = nums[0];
+      const max = nums[nums.length - 1];
+      if (prev) prev.disabled = num <= min;
+      if (next) next.disabled = num >= max;
+    }
+
+    pageButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const p = parseInt(btn.getAttribute('data-page'), 10);
+        if (Number.isFinite(p)) setActivePage(p);
+      });
+    });
+
+    if (prev) {
+      prev.addEventListener('click', () => {
+        const nums = getPageNumbers();
+        const cur = getCurrentPage();
+        const idx = nums.indexOf(cur);
+        if (idx > 0) setActivePage(nums[idx - 1]);
+      });
+    }
+
+    if (next) {
+      next.addEventListener('click', () => {
+        const nums = getPageNumbers();
+        const cur = getCurrentPage();
+        const idx = nums.indexOf(cur);
+        if (idx >= 0 && idx < nums.length - 1) setActivePage(nums[idx + 1]);
+      });
+    }
+
+    setActivePage(getCurrentPage());
+  });
+}
+
 function animateCounterValue(element) {
   if (element.dataset.countAnimated === 'true') return;
   element.dataset.countAnimated = 'true';
@@ -514,12 +588,14 @@ function animateCounterValue(element) {
   const prefix = element.dataset.countPrefix || '';
   const suffix = element.dataset.countSuffix || '';
   const decimals = parseInt(element.dataset.countDecimals || '0', 10);
-  const duration = 1500;
+  const plain = element.dataset.countPlain === 'true';
+  const duration = parseInt(element.dataset.countDuration || '1500', 10) || 1500;
   const startTime = performance.now();
 
   const formatValue = value => new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
+    maximumFractionDigits: decimals,
+    useGrouping: !plain
   }).format(value);
 
   const tick = now => {
@@ -1152,6 +1228,57 @@ function initCaseFilterScrollAnimation() {
   observer.observe(section);
 }
 
+function initAuctionsMarketTabs() {
+  if (document.body.classList.contains('upcoming-auctions-page')) return;
+
+  const section = document.querySelector('.auctions-page .auctions-listing-section');
+  if (!section) return;
+
+  const tabs = section.querySelectorAll('.auctions-market-overlay__top .auctions-market-overlay__tab');
+  const cards = section.querySelectorAll('.auctions-cards-grid .section-3__card');
+  const emptyMsg = document.getElementById('auctionsMarketEmpty');
+  const browseLabel = section.querySelector('.auctions-market-overlay__label');
+  const pagination = section.querySelector('.auctions-pagination');
+
+  if (!tabs.length || !cards.length) return;
+
+  function applyFilter(market) {
+    let visible = 0;
+    cards.forEach((card) => {
+      const m = card.getAttribute('data-auction-market') || 'marketplace';
+      const show = m === market;
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (emptyMsg) {
+      emptyMsg.hidden = visible > 0;
+    }
+    if (pagination) {
+      pagination.hidden = visible === 0;
+    }
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const market = tab.getAttribute('data-market');
+      if (!market) return;
+
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.classList.toggle('auctions-market-overlay__tab--active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      const labelText = tab.getAttribute('data-browse-label');
+      if (browseLabel && labelText) {
+        browseLabel.textContent = labelText;
+      }
+
+      applyFilter(market);
+    });
+  });
+}
+
 function initAuctionsListingIntroAnimation() {
   const section = document.querySelector('.auctions-page .auctions-listing-section');
   if (!section) return;
@@ -1173,7 +1300,7 @@ function initAuctionsListingIntroAnimation() {
     searchRow.style.setProperty('--auction-filter-delay', `${0.16 + tabs.length * 0.08}s`);
   }
 
-  const categories = section.querySelectorAll('.auctions-market-overlay__label, .auctions-market-overlay__grid span');
+  const categories = section.querySelectorAll('.auctions-market-overlay__label, .auctions-market-overlay__grid > *');
   categories.forEach((item, index) => {
     const delay = 0.28 + index * 0.045;
     item.style.setProperty('--auction-category-delay', `${delay}s`);
@@ -1209,6 +1336,7 @@ function initAuctionsCardsGridAnimation() {
       if (!entry.isIntersecting) return;
 
       grid.classList.add('auctions-cards-grid--in-view');
+      animateAuctionListingStatCounters(grid);
       gridObserver.unobserve(entry.target);
     });
   }, {
@@ -1217,6 +1345,26 @@ function initAuctionsCardsGridAnimation() {
   });
 
   observer.observe(grid);
+}
+
+/** Count-up for auction card stats after soft fade-in (main auctions listing only). */
+function animateAuctionListingStatCounters(grid) {
+  if (document.body.classList.contains('upcoming-auctions-page')) return;
+
+  const cards = grid.querySelectorAll('.section-3__card');
+  if (!cards.length) return;
+
+  cards.forEach((card, cardIndex) => {
+    const labels = card.querySelectorAll('.section-3__stat-label[data-count-target]');
+    const cardDelayMs = (0.16 + cardIndex * 0.08) * 1000;
+    /* Align with .section-3__content transition-delay (+0.6s) + duration (~0.65s) */
+    const afterContentFadeMs = 1180;
+
+    labels.forEach((label, statIndex) => {
+      const startMs = cardDelayMs + afterContentFadeMs + statIndex * 140;
+      setTimeout(() => animateCounterValue(label), startMs);
+    });
+  });
 }
 
 function initUpcomingPastAuctionAnimation() {
@@ -1287,18 +1435,24 @@ function initAuctionsDrivingAnimation() {
   const section = document.querySelector('.auctions-page .auctions-driving-section');
   if (!section) return;
 
-  section.classList.add('auctions-driving--animate-ready');
-
-  const stats = section.querySelectorAll('.auctions-driving__stat');
-  stats.forEach((stat, index) => {
-    const lineDelay = 0.22 + index * 0.14;
-    const numberDelay = 0.34 + index * 0.14;
-    stat.style.setProperty('--driving-line-delay', `${lineDelay}s`);
-    stat.style.setProperty('--driving-number-delay', `${numberDelay}s`);
-  });
-
   const counterNumbers = section.querySelectorAll('.auctions-driving__stat h3[data-count-target]');
 
+  counterNumbers.forEach((el) => {
+    const prefix = el.dataset.countPrefix || '';
+    const suffix = el.dataset.countSuffix || '';
+    const decimals = parseInt(el.dataset.countDecimals || '0', 10);
+    const plain = el.dataset.countPlain === 'true';
+    const formatted = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+      useGrouping: !plain
+    }).format(0);
+    el.textContent = `${prefix}${formatted}${suffix}`;
+  });
+
+  section.classList.add('auctions-driving--animate-ready');
+
+  const FADE_MS = 1000;
   const observer = new IntersectionObserver((entries, sectionObserver) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -1306,7 +1460,7 @@ function initAuctionsDrivingAnimation() {
       section.classList.add('auctions-driving--in-view');
 
       counterNumbers.forEach((el, index) => {
-        const startDelay = 520 + index * 180;
+        const startDelay = FADE_MS + 120 + index * 200;
         setTimeout(() => animateCounterValue(el), startDelay);
       });
 
