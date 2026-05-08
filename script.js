@@ -315,9 +315,14 @@ function initNavbarIntroAnimation() {
     // Force layout so initial state is painted before animation starts.
     void navbar.offsetWidth;
 
+    const isHomeHeroNavbar =
+      document.body.classList.contains('home-page') &&
+      !!navbar.closest('.hero');
+    const introDelay = isHomeHeroNavbar ? 960 : 80;
+
     setTimeout(() => {
       navbar.classList.add('navbar--animate-in');
-    }, 80);
+    }, introDelay);
   });
 }
 
@@ -426,6 +431,31 @@ function initSectionOneScrollAnimation() {
   observer.observe(sectionOne);
 }
 
+function toggleSectionInView(section, options = {}) {
+  if (!section) return;
+
+  const {
+    threshold = 0.2,
+    rootMargin = '0px 0px -70px 0px',
+    inViewClass,
+    outOfViewClass
+  } = options;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (outOfViewClass) section.classList.remove(outOfViewClass);
+        if (inViewClass) section.classList.add(inViewClass);
+      } else {
+        if (inViewClass) section.classList.remove(inViewClass);
+        if (outOfViewClass) section.classList.add(outOfViewClass);
+      }
+    });
+  }, { threshold, rootMargin });
+
+  observer.observe(section);
+}
+
 function initSectionTwoScrollAnimation() {
   const sectionTwo = document.querySelector('.section-2');
   if (!sectionTwo) return;
@@ -511,19 +541,11 @@ function initSectionThreeScrollAnimation() {
     card.style.setProperty('--card-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      sectionThree.classList.add('section-3--in-view');
-      sectionObserver.unobserve(entry.target);
-    });
-  }, {
+  toggleSectionInView(sectionThree, {
     threshold: 0.18,
-    rootMargin: '0px 0px -70px 0px'
+    rootMargin: '0px 0px -70px 0px',
+    inViewClass: 'section-3--in-view'
   });
-
-  observer.observe(sectionThree);
 }
 
 function initProcessSectionScroll() {
@@ -682,20 +704,11 @@ function initSectionFiveScrollAnimation() {
   if (!sectionFive) return;
 
   sectionFive.classList.add('section-5--animate-ready');
-
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      sectionFive.classList.add('section-5--in-view');
-      sectionObserver.unobserve(entry.target);
-    });
-  }, {
+  toggleSectionInView(sectionFive, {
     threshold: 0.2,
-    rootMargin: '0px 0px -80px 0px'
+    rootMargin: '0px 0px -80px 0px',
+    inViewClass: 'section-5--in-view'
   });
-
-  observer.observe(sectionFive);
 }
 
 function initSectionFiveMobileCarousel() {
@@ -733,14 +746,22 @@ function initSectionFiveMobileCarousel() {
     }
 
     prev.addEventListener('click', () => {
-      if (!mq.matches) return;
-      index = (index - 1 + cards.length) % cards.length;
-      applyMobile();
+      if (mq.matches) {
+        index = (index - 1 + cards.length) % cards.length;
+        applyMobile();
+      } else {
+        desktopActiveIndex = (desktopActiveIndex - 1 + cards.length) % cards.length;
+        applyDesktop();
+      }
     });
     next.addEventListener('click', () => {
-      if (!mq.matches) return;
-      index = (index + 1) % cards.length;
-      applyMobile();
+      if (mq.matches) {
+        index = (index + 1) % cards.length;
+        applyMobile();
+      } else {
+        desktopActiveIndex = (desktopActiveIndex + 1) % cards.length;
+        applyDesktop();
+      }
     });
     mq.addEventListener('change', sync);
     sync();
@@ -759,19 +780,11 @@ function initSectionSixScrollAnimation() {
     card.style.setProperty('--industry-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      sectionSix.classList.add('section-6--in-view');
-      sectionObserver.unobserve(entry.target);
-    });
-  }, {
+  toggleSectionInView(sectionSix, {
     threshold: 0.2,
-    rootMargin: '0px 0px -70px 0px'
+    rootMargin: '0px 0px -70px 0px',
+    inViewClass: 'section-6--in-view'
   });
-
-  observer.observe(sectionSix);
 }
 
 function initSectionSevenScrollAnimation() {
@@ -779,20 +792,11 @@ function initSectionSevenScrollAnimation() {
   if (!sectionSeven) return;
 
   sectionSeven.classList.add('section-7--animate-ready');
-
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      sectionSeven.classList.add('section-7--in-view');
-      sectionObserver.unobserve(entry.target);
-    });
-  }, {
+  toggleSectionInView(sectionSeven, {
     threshold: 0.2,
-    rootMargin: '0px 0px -80px 0px'
+    rootMargin: '0px 0px -80px 0px',
+    inViewClass: 'section-7--in-view'
   });
-
-  observer.observe(sectionSeven);
 }
 
 function initSectionEightScrollAnimation() {
@@ -801,20 +805,11 @@ function initSectionEightScrollAnimation() {
 
   sectionEightBlocks.forEach(sectionEight => {
     sectionEight.classList.add('section-8--animate-ready');
-
-    const observer = new IntersectionObserver((entries, sectionObserver) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-
-        sectionEight.classList.add('section-8--in-view');
-        sectionObserver.unobserve(entry.target);
-      });
-    }, {
+    toggleSectionInView(sectionEight, {
       threshold: 0.2,
-      rootMargin: '0px 0px -80px 0px'
+      rootMargin: '0px 0px -80px 0px',
+      inViewClass: 'section-8--in-view'
     });
-
-    observer.observe(sectionEight);
   });
 }
 
