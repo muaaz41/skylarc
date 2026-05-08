@@ -318,7 +318,16 @@ function initNavbarIntroAnimation() {
     const isHomeHeroNavbar =
       document.body.classList.contains('home-page') &&
       !!navbar.closest('.hero');
-    const introDelay = isHomeHeroNavbar ? 960 : 80;
+    const isSellHeroNavbar =
+      document.body.classList.contains('sell-page') &&
+      !!navbar.closest('.sell-hero');
+    const isAboutHeroNavbar =
+      document.body.classList.contains('about-page') &&
+      !!navbar.closest('.about-hero');
+    const isCaseStudiesHeroNavbar =
+      document.body.classList.contains('case-studies-page') &&
+      !!navbar.closest('.case-hero');
+    const introDelay = isHomeHeroNavbar ? 960 : isSellHeroNavbar ? 900 : isAboutHeroNavbar ? 900 : isCaseStudiesHeroNavbar ? 900 : 80;
 
     setTimeout(() => {
       navbar.classList.add('navbar--animate-in');
@@ -850,8 +859,8 @@ function initSellTrustedScrollAnimation() {
       sectionObserver.unobserve(entry.target);
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -80px 0px'
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
@@ -929,16 +938,17 @@ function initSellPricingScrollAnimation() {
     line.style.setProperty('--pricing-line-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      section.classList.add('sell-pricing--in-view');
-      sectionObserver.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        section.classList.add('sell-pricing--in-view');
+      } else {
+        section.classList.remove('sell-pricing--in-view');
+      }
     });
   }, {
-    threshold: 0.18,
-    rootMargin: '0px 0px -80px 0px'
+    threshold: 0.08,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
@@ -1034,16 +1044,17 @@ function initAboutMissionScrollAnimation() {
     line.style.setProperty('--mission-line-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      section.classList.add('about-mission--in-view');
-      sectionObserver.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        section.classList.add('about-mission--in-view');
+      } else {
+        section.classList.remove('about-mission--in-view');
+      }
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -70px 0px'
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
@@ -1067,16 +1078,17 @@ function initAboutDifferentScrollAnimation() {
     line.style.setProperty('--different-bottom-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      section.classList.add('about-different--in-view');
-      sectionObserver.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        section.classList.add('about-different--in-view');
+      } else {
+        section.classList.remove('about-different--in-view');
+      }
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -70px 0px'
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
@@ -1096,16 +1108,17 @@ function initAboutTeamScrollAnimation() {
     card.style.setProperty('--team-card-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      section.classList.add('about-team--in-view');
-      sectionObserver.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        section.classList.add('about-team--in-view');
+      } else {
+        section.classList.remove('about-team--in-view');
+      }
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -70px 0px'
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
@@ -1123,16 +1136,17 @@ function initCaseFilterScrollAnimation() {
     card.style.setProperty('--case-card-delay', `${delay}s`);
   });
 
-  const observer = new IntersectionObserver((entries, sectionObserver) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
-      section.classList.add('case-filter--in-view');
-      sectionObserver.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        section.classList.add('case-filter--in-view');
+      } else {
+        section.classList.remove('case-filter--in-view');
+      }
     });
   }, {
-    threshold: 0.16,
-    rootMargin: '0px 0px -80px 0px'
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
@@ -1337,8 +1351,8 @@ function initAuctionSingleSpecAnimation() {
       sectionObserver.unobserve(entry.target);
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -80px 0px'
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
   });
 
   observer.observe(section);
