@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initContactDetailsScrollAnimation();
   initPickupSectionScrollAnimation();
   initAboutMissionScrollAnimation();
+  initAboutValuesScrollAnimation();
   initAboutDifferentScrollAnimation();
   initAboutTeamScrollAnimation();
   initUpcomingPastAuctionAnimation();
@@ -1126,6 +1127,34 @@ function initAboutMissionScrollAnimation() {
         section.classList.add('about-mission--in-view');
       } else {
         section.classList.remove('about-mission--in-view');
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -10% 0px'
+  });
+
+  observer.observe(section);
+}
+
+function initAboutValuesScrollAnimation() {
+  const section = document.querySelector('.about-values-feature');
+  if (!section) return;
+
+  section.classList.add('about-values--animate-ready');
+
+  const cards = section.querySelectorAll('.about-values-feature__card');
+  cards.forEach((card, index) => {
+    const delay = 0.22 + index * 0.12;
+    card.style.setProperty('--about-values-card-delay', `${delay}s`);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        section.classList.add('about-values--in-view');
+      } else {
+        section.classList.remove('about-values--in-view');
       }
     });
   }, {

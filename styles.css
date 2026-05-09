@@ -4288,6 +4288,7 @@ button[class*="btn"]:hover,
 
 .about-page {
   background: #ffffff;
+  overflow-x: hidden;
 }
 
 .about-main {
@@ -4300,6 +4301,13 @@ button[class*="btn"]:hover,
   padding: 0;
   overflow: visible;
   background: #ffffff;
+}
+
+/* Keep all about sections within viewport (prevents right-side whitespace/scroll). */
+.about-main > section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 .about-hero {
@@ -4417,12 +4425,12 @@ button[class*="btn"]:hover,
 }
 
 .about-mission-feature {
-  width: 1440px;
-  max-width: 100%;
+  width: 100%;
+  max-width: none;
   height: auto;
   opacity: 1;
   gap: 10px;
-  margin: 0 auto;
+  margin: 0;
   padding: 56px 44px;
   border-radius: 24px;
   background: #ffffff;
@@ -4630,10 +4638,10 @@ button[class*="btn"]:hover,
 }
 
 .about-values-feature {
-  width: 1440px;
-  max-width: 100%;
+  width: 100%;
+  max-width: none;
   min-height: 0;
-  margin: 24px auto 0;
+  margin: 24px 0 0;
   border-radius: 24px;
   background: #fff2e9;
   padding: 64px 40px;
@@ -4662,7 +4670,7 @@ button[class*="btn"]:hover,
 .about-values-feature__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(8px, 1vw, 12px);
+  gap: clamp(14px, 1.8vw, 22px);
   width: 100%;
   justify-content: stretch;
 }
@@ -4671,10 +4679,10 @@ button[class*="btn"]:hover,
   width: 100%;
   min-width: 0;
   height: auto;
-  aspect-ratio: 405 / 424;
+  aspect-ratio: 405 / 390;
   border-radius: 16px;
   opacity: 1;
-  padding: 12px;
+  padding: 0;
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -4686,24 +4694,56 @@ button[class*="btn"]:hover,
   width: 100%;
   height: 100%;
   border-radius: 16px;
-  background: linear-gradient(140deg, #9ea3ab 0%, #71747a 100%);
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: #d7d7d7;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-values-feature__image-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(88, 83, 83, 0.82);
+  z-index: 1;
 }
 
 .about-values-feature__image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  background: #ffffff;
+  object-fit: cover;
+  background: transparent;
   display: block;
 }
 
+.about-values-feature.about-values--animate-ready .about-values-feature__intro {
+  opacity: 0;
+  transform: translateX(56px);
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.about-values-feature.about-values--animate-ready .about-values-feature__card {
+  opacity: 0;
+  transform: translateY(42px);
+  transition: transform 0.72s ease, opacity 0.72s ease;
+  transition-delay: var(--about-values-card-delay, 0.24s);
+}
+
+.about-values-feature.about-values--animate-ready.about-values--in-view .about-values-feature__intro,
+.about-values-feature.about-values--animate-ready.about-values--in-view .about-values-feature__card {
+  opacity: 1;
+}
+
+.about-values-feature.about-values--animate-ready.about-values--in-view .about-values-feature__intro {
+  transform: translateX(0);
+}
+
+.about-values-feature.about-values--animate-ready.about-values--in-view .about-values-feature__card {
+  transform: translateY(0);
+}
+
 .about-values-feature__card-content {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 2;
   height: 100%;
   display: flex;
@@ -4713,30 +4753,40 @@ button[class*="btn"]:hover,
 }
 
 .about-values-feature__icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
   background: #ffffff;
-  color: #605b5e;
-  font-size: 11px;
-  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
   margin-bottom: auto;
+  margin-top: 6px;
+  margin-left: 6px;
+  box-shadow: 0 8px 16px rgba(17, 17, 17, 0.12);
+}
+
+.about-values-feature__icon img {
+  width: 56px;
+  height: 56px;
+  max-width: none;
+  max-height: none;
+  display: block;
 }
 
 .about-values-feature__card-content h3 {
   margin: 0;
   color: #ffffff;
-  font-size: 30px;
+  font-size: clamp(24px, 2vw, 32px);
   font-weight: 500;
-  line-height: 36px;
+  line-height: 1.25;
 }
 
 .about-values-feature__card-content p {
   margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.92);
   font-size: 14px;
   line-height: 20px;
 }
@@ -8616,6 +8666,108 @@ main.resources-page {
   margin-top: 8px;
 }
 
+/* Home page uses the same maximise block as resources page */
+.home-page .rs-bottom-layout {
+  width: 100%;
+  max-width: none;
+  height: 514px;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 24px;
+}
+
+.home-page .rs-cta-content {
+  width: 480px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  position: relative;
+  z-index: 3;
+}
+
+.home-page .rs-sales-card {
+  width: 377.5128556574px;
+  height: 397.3219991309px;
+  border: none;
+  padding: 0;
+  transform: rotate(2deg);
+  overflow: visible;
+  flex-shrink: 0;
+  background: transparent;
+  position: absolute;
+  left: -10px;
+  top: 130px;
+  z-index: 2;
+}
+
+.home-page .rs-sales-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.home-page .rs-metrics-card {
+  width: 400.0000109413px;
+  height: 524.0937643357px;
+  border: none;
+  padding: 0;
+  transform: rotate(-2deg);
+  overflow: visible;
+  flex-shrink: 0;
+  background: transparent;
+  position: absolute;
+  right: -55px;
+  top: 10px;
+  z-index: 2;
+}
+
+.home-page .rs-metrics-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.home-page .rs-cta-content h3 {
+  width: 470px;
+  margin: 0;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-transform: capitalize;
+  color: #1f1a1d;
+}
+
+.home-page .rs-cta-content p {
+  width: 430px;
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #605b5e;
+}
+
+.home-page .rs-cta-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
 .resources-page .rs-cta-primary,
 .resources-page .rs-cta-secondary {
   height: 44px;
@@ -10101,30 +10253,18 @@ body.case-study-internal-page.auction-single-page {
   border-radius: 20px;
 }
 
-/* Match site-wide primary pill (.btn--primary); override .auction-single-banner__cta fixed size */
-.case-study-internal-page .auction-single-banner__cta.btn.btn--primary {
+.case-study-internal-page .auction-single-banner__cta {
   width: auto;
-  min-width: 160px;
-  height: auto;
-  min-height: 0;
-  margin-top: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 150px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
   gap: 8px;
-  padding: var(--spacing-lg) var(--spacing-2xl);
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 600;
-  border-radius: 50px;
-  background-color: var(--color-primary);
-  border: 2px solid var(--color-primary);
-  color: var(--color-white);
-  text-align: center;
-  vertical-align: middle;
+  font-size: 14px;
+  line-height: 1;
 }
 
-.case-study-internal-page .auction-single-banner__cta.btn.btn--primary span {
+.case-study-internal-page .auction-single-banner__cta span {
   font-size: 16px;
   line-height: 1;
 }
@@ -12935,8 +13075,19 @@ body.case-study-internal-page.auction-single-page {
     min-height: 420px;
   }
 
+  .home-page .rs-bottom-layout {
+    height: auto;
+    padding: 36px 16px;
+    min-height: 420px;
+  }
+
   .resources-page .rs-sales-card,
   .resources-page .rs-metrics-card {
+    display: none;
+  }
+
+  .home-page .rs-sales-card,
+  .home-page .rs-metrics-card {
     display: none;
   }
 
@@ -12946,8 +13097,19 @@ body.case-study-internal-page.auction-single-page {
     gap: 20px;
   }
 
+  .home-page .rs-cta-content {
+    width: 100%;
+    max-width: 620px;
+    gap: 20px;
+  }
+
   .resources-page .rs-cta-content h3,
   .resources-page .rs-cta-content p {
+    width: 100%;
+  }
+
+  .home-page .rs-cta-content h3,
+  .home-page .rs-cta-content p {
     width: 100%;
   }
 }
@@ -13360,13 +13522,32 @@ body.case-study-internal-page.auction-single-page {
     overflow: hidden;
   }
 
+  .home-page .rs-bottom-layout {
+    height: auto;
+    min-height: 460px;
+    padding: 56px 32px;
+    overflow: hidden;
+  }
+
   .resources-page .rs-cta-content {
     width: 100%;
     max-width: 620px;
     gap: 16px;
   }
 
+  .home-page .rs-cta-content {
+    width: 100%;
+    max-width: 620px;
+    gap: 16px;
+  }
+
   .resources-page .rs-cta-content h3 {
+    width: 100%;
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .home-page .rs-cta-content h3 {
     width: 100%;
     font-size: 40px;
     line-height: 48px;
@@ -13379,7 +13560,19 @@ body.case-study-internal-page.auction-single-page {
     line-height: 24px;
   }
 
+  .home-page .rs-cta-content p {
+    width: 100%;
+    max-width: 560px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
   .resources-page .rs-cta-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .home-page .rs-cta-actions {
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -13393,7 +13586,25 @@ body.case-study-internal-page.auction-single-page {
     z-index: 1;
   }
 
+  .home-page .rs-sales-card {
+    display: block;
+    width: 260px;
+    height: auto;
+    left: -74px;
+    top: 180px;
+    z-index: 1;
+  }
+
   .resources-page .rs-metrics-card {
+    display: block;
+    width: 270px;
+    height: auto;
+    right: -96px;
+    top: 44px;
+    z-index: 1;
+  }
+
+  .home-page .rs-metrics-card {
     display: block;
     width: 270px;
     height: auto;
@@ -13411,7 +13622,20 @@ body.case-study-internal-page.auction-single-page {
     overflow: hidden;
   }
 
+  .home-page .rs-bottom-layout {
+    height: auto;
+    min-height: 0;
+    padding: 56px 16px;
+    overflow: hidden;
+  }
+
   .resources-page .rs-cta-content {
+    width: 100%;
+    min-height: auto;
+    gap: 16px;
+  }
+
+  .home-page .rs-cta-content {
     width: 100%;
     min-height: auto;
     gap: 16px;
@@ -13423,13 +13647,34 @@ body.case-study-internal-page.auction-single-page {
     line-height: 40px;
   }
 
+  .home-page .rs-cta-content h3 {
+    width: 100%;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
   .resources-page .rs-cta-content p {
     width: 100%;
     font-size: 15px;
     line-height: 22px;
   }
 
+  .home-page .rs-cta-content p {
+    width: 100%;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
   .resources-page .rs-cta-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-page .rs-cta-actions {
     width: 100%;
     flex-direction: column;
     gap: 12px;
@@ -13447,6 +13692,11 @@ body.case-study-internal-page.auction-single-page {
 
   .resources-page .rs-sales-card,
   .resources-page .rs-metrics-card {
+    display: none;
+  }
+
+  .home-page .rs-sales-card,
+  .home-page .rs-metrics-card {
     display: none;
   }
 }
@@ -16244,18 +16494,7 @@ body.case-study-internal-page.auction-single-page {
     gap: 12px;
   }
 
-  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary {
-    min-width: 170px;
-    height: auto;
-    padding: var(--spacing-lg) var(--spacing-xl);
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary span {
-    font-size: 16px;
-  }
-
+  .case-study-internal-page .auction-single-banner__cta,
   .case-study-single-page .auction-single-banner__cta {
     min-width: 170px;
     height: 42px;
@@ -16263,6 +16502,7 @@ body.case-study-internal-page.auction-single-page {
     font-size: 15px;
   }
 
+  .case-study-internal-page .auction-single-banner__cta span,
   .case-study-single-page .auction-single-banner__cta span {
     font-size: 15px;
   }
@@ -18028,25 +18268,7 @@ body.home-page .process-scroll-track {
     width: 100%;
   }
 
-  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary {
-    order: 5;
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-    height: auto;
-    min-height: 44px;
-    margin-top: 10px;
-    padding: 12px 20px;
-    font-size: 14px;
-    line-height: 20px;
-    display: inline-flex;
-    justify-content: center;
-  }
-
-  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary span {
-    font-size: 14px;
-  }
-
+  .case-study-internal-page .auction-single-banner__cta,
   .case-study-single-page .auction-single-banner__cta {
     order: 5;
     width: 100%;
@@ -18060,6 +18282,7 @@ body.home-page .process-scroll-track {
     justify-content: center;
   }
 
+  .case-study-internal-page .auction-single-banner__cta span,
   .case-study-single-page .auction-single-banner__cta span {
     font-size: 12px;
   }
