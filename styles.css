@@ -10039,13 +10039,58 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
   border-radius: 999px;
 }
 
-.case-study-internal-page .auction-single-layout {
+/* Case study internal: full-bleed sections (like about/index), white page bg, content capped in .case-study-internal-inner */
+body.case-study-internal-page.auction-single-page {
+  background: #ffffff;
+}
+
+/* Case study internal: section-wise bands + inner max-width (no single white layout wrapper) */
+.case-study-internal-page .auction-single-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.case-study-internal-page .case-study-internal-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 5vw, 80px);
+  padding-right: clamp(16px, 5vw, 80px);
+  box-sizing: border-box;
+}
+
+.case-study-internal-page .case-study-internal-section {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 16px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.case-study-internal-page .case-study-internal-intro-section {
   margin-top: 72px;
-  border-radius: 30px;
+  background: #ffffff;
+}
+
+.case-study-internal-page .case-study-internal-intro-section .case-study-internal-inner {
+  padding-top: clamp(16px, 3vw, 28px);
+  padding-bottom: clamp(16px, 3vw, 28px);
 }
 
 .case-study-internal-page .auction-single-banner {
-  border-radius: 24px;
+  border-radius: 18px;
+}
+
+.case-study-internal-page .auction-single-top {
+  margin-top: 24px;
 }
 
 .case-study-internal-page .auction-single-main-image {
@@ -10056,18 +10101,30 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
   border-radius: 20px;
 }
 
-.case-study-internal-page .auction-single-banner__cta {
+/* Match site-wide primary pill (.btn--primary); override .auction-single-banner__cta fixed size */
+.case-study-internal-page .auction-single-banner__cta.btn.btn--primary {
   width: auto;
-  min-width: 150px;
-  height: 44px;
-  padding: 0 20px;
-  border-radius: 999px;
+  min-width: 160px;
+  height: auto;
+  min-height: 0;
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 14px;
-  line-height: 1;
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  border-radius: 50px;
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  vertical-align: middle;
 }
 
-.case-study-internal-page .auction-single-banner__cta span {
+.case-study-internal-page .auction-single-banner__cta.btn.btn--primary span {
   font-size: 16px;
   line-height: 1;
 }
@@ -10103,13 +10160,23 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
   font-weight: 500;
 }
 
-.case-study-internal-page .auction-single-spec-section {
-  width: calc(100% + 56px);
-  max-width: none;
-  margin-left: -28px;
-  margin-right: -28px;
-  padding: 98px 84px;
+.case-study-internal-page .auction-single-spec-section.case-study-internal-section {
+  display: block;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  height: auto;
+  min-height: 0;
+  border-left: none;
+  border-right: none;
+}
+
+.case-study-internal-page .case-study-internal-inner--spec {
+  display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 64px;
+  padding-top: 72px;
+  padding-bottom: 72px;
 }
 
 .case-study-internal-page .auction-single-spec-right h3 {
@@ -10130,18 +10197,58 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
   padding: 10px 0;
 }
 
-.case-study-internal-page .auction-single-pickup-section {
-  width: calc(100% + 56px);
-  max-width: none;
-  margin-left: -28px;
-  margin-right: -28px;
+.case-study-internal-page .auction-single-pickup-section.case-study-internal-section {
+  margin-left: 0;
+  margin-right: 0;
+  height: auto;
+  border-left: none;
+  border-right: none;
 }
 
-.case-study-internal-page .section-5-placeholder {
-  width: calc(100% + 56px);
+.case-study-internal-page .auction-single-pickup-section .case-study-internal-inner {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.case-study-internal-page .section-5-placeholder.case-study-internal-section {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
   max-width: none;
-  margin-left: -28px;
-  margin-right: -28px;
+  padding: 0;
+}
+
+.case-study-internal-page .section-5-placeholder .case-study-internal-inner {
+  padding-top: clamp(48px, 6vw, 120px);
+  padding-bottom: clamp(48px, 6vw, 100px);
+}
+
+.case-study-internal-page .section-8-cta.case-study-internal-section {
+  width: 100%;
+  max-width: none;
+  margin: 16px 0 0;
+  padding: 0;
+  position: relative;
+  left: auto;
+  right: auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.case-study-internal-page .section-8-cta .case-study-internal-inner--cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 514px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 56px clamp(16px, 5vw, 80px);
+  box-sizing: border-box;
 }
 
 /* Case study single — hero shell matches internal (no pickup/spec/section-5 bleed rules) */
@@ -15960,6 +16067,18 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
     overflow: hidden;
   }
 
+  body.case-study-internal-page .section-8-cta.case-study-internal-section {
+    width: 100%;
+    max-width: none;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    min-height: 0;
+    border-radius: 24px;
+  }
+
   .auction-single-page .section-8__content {
     width: 100%;
     max-width: 620px;
@@ -16002,13 +16121,18 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
   }
 
   /* Case study internal / single: shares .auction-single-page; undo desktop bleed + tighten tablet layout */
-  .case-study-internal-page .auction-single-main,
+  .case-study-internal-page .auction-single-main {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   .case-study-single-page .auction-single-main {
     width: min(1080px, calc(100vw - 24px));
     max-width: 100%;
   }
 
-  .case-study-internal-page .auction-single-layout,
   .case-study-single-page .auction-single-layout {
     margin-top: 22px;
     width: 100%;
@@ -16017,17 +16141,11 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
     margin-right: auto;
   }
 
-  /* Wider first three blocks (banner, gallery, spec) — bleed past layout padding */
-  .case-study-internal-page .auction-single-banner,
-  .case-study-internal-page .auction-single-top,
-  .case-study-internal-page .auction-single-spec-section {
-    width: calc(100% + 36px);
+  .case-study-internal-page .case-study-internal-section {
     max-width: none;
-    margin-left: -18px;
-    margin-right: -18px;
-    box-sizing: border-box;
   }
 
+  /* Wider first blocks (single template only) — bleed past layout padding */
   .case-study-single-page .auction-single-banner,
   .case-study-single-page .auction-single-top {
     width: calc(100% + 36px);
@@ -16126,7 +16244,18 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
     gap: 12px;
   }
 
-  .case-study-internal-page .auction-single-banner__cta,
+  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary {
+    min-width: 170px;
+    height: auto;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary span {
+    font-size: 16px;
+  }
+
   .case-study-single-page .auction-single-banner__cta {
     min-width: 170px;
     height: 42px;
@@ -16134,19 +16263,18 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
     font-size: 15px;
   }
 
-  .case-study-internal-page .auction-single-banner__cta span,
   .case-study-single-page .auction-single-banner__cta span {
     font-size: 15px;
   }
 
-  .case-study-internal-page .auction-single-spec-section {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    padding: 30px 20px;
+  .case-study-internal-page .auction-single-spec-section.case-study-internal-section {
+    padding: 0;
+  }
+
+  .case-study-internal-page .case-study-internal-inner--spec {
     grid-template-columns: 1fr;
     gap: 22px;
+    padding: 30px 20px;
   }
 
   .case-study-internal-page .auction-single-spec-right h3 {
@@ -17816,7 +17944,15 @@ body.home-page .process-scroll-track {
     max-width: 100%;
   }
 
-  .case-study-internal-page .auction-single-layout,
+  .case-study-internal-page .case-study-internal-section {
+    margin-top: 10px;
+    border-radius: 12px;
+  }
+
+  .case-study-internal-page .case-study-internal-intro-section {
+    margin-top: 10px;
+  }
+
   .case-study-single-page .auction-single-layout {
     margin-top: 8px;
     margin-left: auto;
@@ -17892,7 +18028,25 @@ body.home-page .process-scroll-track {
     width: 100%;
   }
 
-  .case-study-internal-page .auction-single-banner__cta,
+  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary {
+    order: 5;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: auto;
+    min-height: 44px;
+    margin-top: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    line-height: 20px;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  .case-study-internal-page .auction-single-banner__cta.btn.btn--primary span {
+    font-size: 14px;
+  }
+
   .case-study-single-page .auction-single-banner__cta {
     order: 5;
     width: 100%;
@@ -17906,7 +18060,6 @@ body.home-page .process-scroll-track {
     justify-content: center;
   }
 
-  .case-study-internal-page .auction-single-banner__cta span,
   .case-study-single-page .auction-single-banner__cta span {
     font-size: 12px;
   }
@@ -17926,14 +18079,14 @@ body.home-page .process-scroll-track {
     border-radius: 8px;
   }
 
-  .case-study-internal-page .auction-single-spec-section {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    padding: 14px 8px;
+  .case-study-internal-page .auction-single-spec-section.case-study-internal-section {
+    padding: 0;
+  }
+
+  .case-study-internal-page .case-study-internal-inner--spec {
     grid-template-columns: 1fr;
     gap: 10px;
+    padding: 14px 8px;
   }
 
   .case-study-internal-page .auction-single-spec-right h3 {
