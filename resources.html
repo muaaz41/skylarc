@@ -249,15 +249,18 @@
         list.innerHTML = items
           .map(
             (item, idx) => `
-              <details ${idx === openIdx ? "open" : ""}>
+              <details class="${idx === openIdx ? "rs-faq-default-open" : ""}" ${idx === openIdx ? "open" : ""}>
                 <summary>
                   <span>${item.q}</span>
-                  <span class="faq-arrow">
-                    <img class="arrow-down" src="assets/Arrow Down.png" alt="Expand" />
-                    <img class="arrow-up" src="assets/Arrow Up.png" alt="Collapse" />
+                  <span class="faq-arrow" aria-hidden="true">
+                    <img src="assets/Arrow Down.png" alt="" />
                   </span>
                 </summary>
-                <p>${item.a}</p>
+                <div class="rs-faq-answer">
+                  <div class="rs-faq-answer-inner">
+                    <p>${item.a}</p>
+                  </div>
+                </div>
               </details>
             `
           )
@@ -266,6 +269,7 @@
         const detailsItems = list.querySelectorAll("details");
         detailsItems.forEach((detail) => {
           detail.addEventListener("toggle", () => {
+            detailsItems.forEach((d) => d.classList.remove("rs-faq-default-open"));
             if (!detail.open) return;
             detailsItems.forEach((other) => {
               if (other !== detail) other.open = false;

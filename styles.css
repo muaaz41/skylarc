@@ -8304,6 +8304,9 @@ main.resources-page {
 }
 
 .resources-page .rs-faq-list {
+  --rs-faq-panel-duration: 1.15s;
+  /* Arrow rotation and answer fade share this duration */
+  --rs-faq-motion-duration: 1.15s;
   width: min(736px, 100%);
   height: 588px;
   margin: 0 auto;
@@ -8318,6 +8321,8 @@ main.resources-page {
   border-radius: 16px;
   background: #f2f3f6;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .resources-page .rs-faq-list.rs-faq-list--animate-ready details {
@@ -8333,7 +8338,35 @@ main.resources-page {
 }
 
 .resources-page .rs-faq-list details:not([open]) {
-  height: 74px;
+  min-height: 74px;
+}
+
+.resources-page .rs-faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--rs-faq-panel-duration) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.resources-page .rs-faq-list details[open] .rs-faq-answer {
+  grid-template-rows: 1fr;
+}
+
+.resources-page .rs-faq-answer-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Hide answer copy only while collapsed — avoids invisible text when [open] but no helper class matched */
+.resources-page .rs-faq-list details:not([open]) .rs-faq-answer-inner {
+  opacity: 0;
+  transform: translate3d(0, -12px, 0);
+}
+
+/* Same as default-expanded vendor row: panel animates (grid); answer copy shows with no extra stagger */
+.resources-page .rs-faq-list details[open] .rs-faq-answer-inner {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: none;
 }
 
 .resources-page .rs-faq-list summary {
@@ -8372,18 +8405,19 @@ main.resources-page {
   width: 24px;
   height: 24px;
   display: block;
+  transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  transition: transform var(--rs-faq-motion-duration) cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.resources-page .faq-arrow .arrow-up {
-  display: none;
+.resources-page .rs-faq-list details[open] .faq-arrow img {
+  transform: rotate(180deg);
 }
 
-.resources-page .rs-faq-list details[open] .faq-arrow .arrow-down {
-  display: none;
-}
-
-.resources-page .rs-faq-list details[open] .faq-arrow .arrow-up {
-  display: block;
+/* Pre-expanded row on first paint only */
+.resources-page .rs-faq-list details.rs-faq-default-open[open] .faq-arrow img {
+  transform: rotate(180deg);
+  transition: none;
 }
 
 .resources-page .rs-faq-list p {
@@ -8394,6 +8428,27 @@ main.resources-page {
   line-height: 24px;
   letter-spacing: -0.02em;
   color: #1f1a1d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resources-page .rs-faq-list {
+    --rs-faq-panel-duration: 0.01ms;
+    --rs-faq-motion-duration: 0.01ms;
+  }
+
+  .resources-page .rs-faq-answer {
+    transition-duration: 0.01ms;
+  }
+
+  .resources-page .faq-arrow img {
+    transition-duration: 0.01ms;
+  }
+
+  .resources-page .rs-faq-list details[open] .rs-faq-answer-inner {
+    transition-duration: 0.01ms;
+    transition-delay: 0s !important;
+    transform: none;
+  }
 }
 
 .resources-page .rs-faq-bottom-line {
@@ -10183,8 +10238,15 @@ body.auctions-page:not(.upcoming-auctions-page) .section-8-cta {
   justify-content: flex-end;
   gap: 14px;
   align-self: flex-start;
-  margin-top: 16px;
-  transform: translateX(-18px);
+  transform: translateX(-60px);
+}
+
+.case-study-internal-page .case-study-internal-stats {
+  margin-top: 66px;
+}
+
+.case-study-single-page .case-study-internal-stats {
+  margin-top: 48px;
 }
 
 /* Same horizontal band as .case-study-internal-inner (Martin Jetpack banner / section content) */
@@ -16909,6 +16971,10 @@ body.case-study-single-page.auction-single-page {
     gap: 12px;
   }
 
+  .case-study-internal-page .case-study-internal-stats {
+    margin-top: 12px;
+  }
+
   .case-study-internal-page .auction-single-banner__cta,
   .case-study-single-page .auction-single-banner__cta {
     min-width: 170px;
@@ -18643,6 +18709,10 @@ body.home-page .process-scroll-track {
     text-align: center;
   }
 
+  .case-study-internal-page .case-study-internal-stats {
+    margin-top: 10px;
+  }
+
   .case-study-internal-page .case-study-internal-stat,
   .case-study-single-page .case-study-internal-stat {
     flex: 1 1 calc(50% - 4px);
@@ -18744,5 +18814,498 @@ body.home-page .process-scroll-track {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
+  }
+}
+
+/* Sell page: full rounded frame for testimonials (match bottom radius on top) */
+.sell-page .section-5-placeholder {
+  border-top-left-radius: 48px;
+  border-top-right-radius: 48px;
+}
+
+/* Sell page: "How Selling with Skylarc Works" — match section-4 bottom radius (32px) on top */
+.sell-page .process-scroll-track .section-4-placeholder {
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+}
+
+/* Sell page: testimonial carousel arrows sit OUTSIDE the reviews card with no background */
+.sell-page .section-5__reviews-wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.sell-page .section-5__carousel-btn--prev {
+  margin-bottom: -36px;
+}
+
+.sell-page .section-5__carousel-btn--next {
+  margin-top: -36px;
+}
+
+.sell-page .section-5__carousel-btn--prev img {
+  transform: rotate(0deg);
+}
+
+.sell-page .section-5__carousel-btn--next img {
+  transform: rotate(0deg);
+}
+
+.sell-page .section-5__reviews-wrap .section-5__reviews {
+  margin: 0;
+  width: 100%;
+  max-width: 1280px;
+  min-height: 708px;
+  height: 708px;
+  padding: 32px;
+  box-sizing: border-box;
+  grid-template-columns: 500px 684px;
+  gap: 32px;
+  background-image: url("assets/Review Background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border: 1px solid #3D373B;
+  opacity: 1;
+}
+
+.sell-page .section-5__reviews-wrap .section-5__reviews {
+  position: relative;
+  isolation: isolate;
+}
+
+.sell-page .section-5__reviews-wrap .section-5__reviews::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 6, 12, 0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sell-page .section-5__review-list {
+  width: 684px;
+  height: 644px;
+  min-height: 644px;
+  padding-right: 0;
+  gap: 48px;
+}
+
+.sell-page .section-5__review-card {
+  padding: 32px;
+  background: transparent;
+  border: 1px solid transparent;
+  opacity: 0.35;
+  transition: opacity 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.sell-page .section-5__review-card--active {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid #3D373B;
+  opacity: 1;
+}
+
+.sell-page .section-5__review-card p,
+.sell-page .section-5__review-card--active p {
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+}
+
+.sell-page .section-5__image-placeholder {
+  width: 500px;
+  height: 644px;
+  min-height: 644px;
+  opacity: 1;
+}
+
+.sell-page .section-5__carousel-btn {
+  position: static;
+  background: transparent;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  transform: translateX(266px);
+}
+
+.sell-page .section-5__carousel-btn:hover,
+.sell-page .section-5__carousel-btn:focus,
+.sell-page .section-5__carousel-btn:active {
+  background: transparent;
+  opacity: 1;
+  transform: translateX(266px);
+  box-shadow: none;
+}
+
+/* Keep case-study testimonial arrows static on hover (overrides global button[class*="btn"]:hover) */
+.case-study-internal-page .section-5__carousel-btn,
+.case-study-single-page .section-5__carousel-btn,
+.case-study-internal-page .section-5__carousel-btn:hover,
+.case-study-internal-page .section-5__carousel-btn:focus,
+.case-study-internal-page .section-5__carousel-btn:active,
+.case-study-single-page .section-5__carousel-btn:hover,
+.case-study-single-page .section-5__carousel-btn:focus,
+.case-study-single-page .section-5__carousel-btn:active {
+  transform: none;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .sell-page .section-5__reviews-wrap .section-5__reviews {
+    max-width: 100%;
+    min-height: 0;
+    height: auto;
+    padding: 16px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .sell-page .section-5__image-placeholder {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .sell-page .section-5__review-list {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .sell-page .section-5__carousel-btn {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+  }
+
+  .sell-page .section-5__carousel-btn--prev,
+  .sell-page .section-5__carousel-btn--next {
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+  }
+
+  .sell-page .section-5__review-list {
+    padding: 0;
+  }
+}
+
+/* ============================================
+   HOME + AUCTIONS + CASE STUDIES + CASE STUDY INTERNAL + CASE STUDY SINGLE: mirror sell-page testimonial section exactly
+   ============================================ */
+.home-page .section-5__reviews-wrap,
+.auctions-page .section-5__reviews-wrap,
+.case-studies-page .section-5__reviews-wrap,
+.case-study-internal-page .section-5__reviews-wrap,
+.case-study-single-page .section-5__reviews-wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.case-study-internal-page .section-5__reviews-wrap,
+.case-study-single-page .section-5__reviews-wrap {
+  margin-top: 36px;
+}
+
+.home-page .section-5__carousel-btn--prev,
+.auctions-page .section-5__carousel-btn--prev,
+.case-studies-page .section-5__carousel-btn--prev,
+.case-study-internal-page .section-5__carousel-btn--prev,
+.case-study-single-page .section-5__carousel-btn--prev {
+  margin-bottom: -36px;
+}
+
+.home-page .section-5__carousel-btn--next,
+.auctions-page .section-5__carousel-btn--next,
+.case-studies-page .section-5__carousel-btn--next,
+.case-study-internal-page .section-5__carousel-btn--next,
+.case-study-single-page .section-5__carousel-btn--next {
+  margin-top: -36px;
+}
+
+.home-page .section-5__carousel-btn--prev img,
+.home-page .section-5__carousel-btn--next img,
+.auctions-page .section-5__carousel-btn--prev img,
+.auctions-page .section-5__carousel-btn--next img,
+.case-studies-page .section-5__carousel-btn--prev img,
+.case-studies-page .section-5__carousel-btn--next img,
+.case-study-internal-page .section-5__carousel-btn--prev img,
+.case-study-internal-page .section-5__carousel-btn--next img,
+.case-study-single-page .section-5__carousel-btn--prev img,
+.case-study-single-page .section-5__carousel-btn--next img {
+  transform: rotate(0deg);
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+}
+
+.home-page .section-5__reviews-wrap .section-5__reviews,
+.auctions-page .section-5__reviews-wrap .section-5__reviews,
+.case-studies-page .section-5__reviews-wrap .section-5__reviews,
+.case-study-internal-page .section-5__reviews-wrap .section-5__reviews,
+.case-study-single-page .section-5__reviews-wrap .section-5__reviews {
+  margin: 0;
+  width: 100%;
+  max-width: 1280px;
+  min-height: 708px;
+  height: 708px;
+  padding: 32px;
+  box-sizing: border-box;
+  grid-template-columns: 500px 684px;
+  gap: 32px;
+  background-image: url("assets/Review Background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border: 1px solid #3D373B;
+  position: relative;
+  isolation: isolate;
+  opacity: 1;
+  transform: none;
+}
+
+.home-page .section-5__reviews-wrap .section-5__reviews::before,
+.auctions-page .section-5__reviews-wrap .section-5__reviews::before,
+.case-studies-page .section-5__reviews-wrap .section-5__reviews::before,
+.case-study-internal-page .section-5__reviews-wrap .section-5__reviews::before,
+.case-study-single-page .section-5__reviews-wrap .section-5__reviews::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 6, 12, 0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Disable any legacy review-list overlay so it doesn't double up with the new container background */
+.home-page .section-5__reviews-wrap .section-5__review-list::before,
+.auctions-page .section-5__reviews-wrap .section-5__review-list::before,
+.case-studies-page .section-5__reviews-wrap .section-5__review-list::before,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-list::before,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-list::before {
+  content: none;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-list,
+.auctions-page .section-5__reviews-wrap .section-5__review-list,
+.case-studies-page .section-5__reviews-wrap .section-5__review-list,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-list,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-list {
+  width: 684px;
+  height: 644px;
+  min-height: 644px;
+  padding: 0;
+  gap: 48px;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-card,
+.auctions-page .section-5__reviews-wrap .section-5__review-card,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card {
+  padding: 32px;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  opacity: 0.35;
+  overflow: visible;
+  transition: opacity 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-card::after,
+.auctions-page .section-5__reviews-wrap .section-5__review-card::after,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card::after,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card::after,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card::after {
+  content: none;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-card--active,
+.auctions-page .section-5__reviews-wrap .section-5__review-card--active,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card--active,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card--active,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card--active {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid #3D373B;
+  opacity: 1;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-card p,
+.home-page .section-5__reviews-wrap .section-5__review-card--active p,
+.auctions-page .section-5__reviews-wrap .section-5__review-card p,
+.auctions-page .section-5__reviews-wrap .section-5__review-card--active p,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card p,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card--active p,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card p,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card--active p,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card p,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card--active p {
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p,
+.auctions-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p {
+  color: #ffffff;
+}
+
+.home-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img,
+.auctions-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img,
+.case-studies-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img,
+.case-study-internal-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img,
+.case-study-single-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img {
+  opacity: 1;
+}
+
+.home-page .section-5__reviews-wrap .section-5__image-placeholder,
+.auctions-page .section-5__reviews-wrap .section-5__image-placeholder,
+.case-studies-page .section-5__reviews-wrap .section-5__image-placeholder,
+.case-study-internal-page .section-5__reviews-wrap .section-5__image-placeholder,
+.case-study-single-page .section-5__reviews-wrap .section-5__image-placeholder {
+  width: 500px;
+  height: 644px;
+  min-height: 644px;
+  opacity: 1;
+}
+
+.home-page .section-5__reviews-wrap .section-5__carousel-btn,
+.auctions-page .section-5__reviews-wrap .section-5__carousel-btn,
+.case-studies-page .section-5__reviews-wrap .section-5__carousel-btn,
+.case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn,
+.case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn {
+  position: static;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  transform: translateX(266px);
+  box-shadow: none;
+}
+
+.home-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+.home-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+.home-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+.auctions-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+.auctions-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+.auctions-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+.case-studies-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+.case-studies-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+.case-studies-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+.case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+.case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+.case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+.case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+.case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+.case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn:active {
+  background: transparent;
+  opacity: 1;
+  transform: translateX(266px);
+  box-shadow: none;
+}
+
+@media (max-width: 767px) {
+  .home-page .section-5__reviews-wrap .section-5__reviews,
+  .auctions-page .section-5__reviews-wrap .section-5__reviews,
+  .case-studies-page .section-5__reviews-wrap .section-5__reviews,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__reviews,
+  .case-study-single-page .section-5__reviews-wrap .section-5__reviews {
+    max-width: 100%;
+    min-height: 0;
+    height: auto;
+    padding: 16px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .home-page .section-5__reviews-wrap .section-5__image-placeholder,
+  .auctions-page .section-5__reviews-wrap .section-5__image-placeholder,
+  .case-studies-page .section-5__reviews-wrap .section-5__image-placeholder,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__image-placeholder,
+  .case-study-single-page .section-5__reviews-wrap .section-5__image-placeholder {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .home-page .section-5__reviews-wrap .section-5__review-list,
+  .auctions-page .section-5__reviews-wrap .section-5__review-list,
+  .case-studies-page .section-5__reviews-wrap .section-5__review-list,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__review-list,
+  .case-study-single-page .section-5__reviews-wrap .section-5__review-list {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    gap: 0;
+    padding: 0;
+  }
+
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn,
+  .auctions-page .section-5__reviews-wrap .section-5__carousel-btn,
+  .case-studies-page .section-5__reviews-wrap .section-5__carousel-btn,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn,
+  .case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+  }
+
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+  .auctions-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+  .auctions-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+  .auctions-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+  .case-studies-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+  .case-studies-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+  .case-studies-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+  .case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+  .case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+  .case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn:active {
+    transform: none;
+  }
+
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn--next,
+  .auctions-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
+  .auctions-page .section-5__reviews-wrap .section-5__carousel-btn--next,
+  .case-studies-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
+  .case-studies-page .section-5__reviews-wrap .section-5__carousel-btn--next,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
+  .case-study-internal-page .section-5__reviews-wrap .section-5__carousel-btn--next,
+  .case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
+  .case-study-single-page .section-5__reviews-wrap .section-5__carousel-btn--next {
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
   }
 }
