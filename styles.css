@@ -5936,14 +5936,20 @@ a.section-3__card:focus-visible {
   width: 188px;
   height: 158px;
   border-radius: 12px;
-  background: #c9ced7;
-  border: 1px dashed rgba(96, 91, 94, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #605b5e;
-  font-size: 14px;
-  font-weight: 500;
+  background: #ffffff;
+  border: 4px solid #ffffff;
+  display: block;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.sell-trusted__img-overlay-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
 }
 
 .sell-trusted__content h2 {
@@ -6084,27 +6090,18 @@ a.section-3__card:focus-visible {
 .sell-results-section {
   width: 100%;
   max-width: none;
-  height: 672px;
+  height: auto;
+  min-height: 0;
   margin: 0;
-  padding: 0 0 40px;
-  background: #ffffff;
-  display: flex;
-  gap: var(--site-gutter);
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
-}
-
-.sell-results__panel {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  border-radius: 24px;
+  padding: clamp(48px, 6vw, 72px) clamp(32px, 5vw, 84px);
   background: #1f1a20;
-  padding: 72px 84px;
+  border-radius: 24px;
+  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(380px, 1.25fr);
   gap: 40px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .sell-results__title-wrap {
@@ -6224,9 +6221,8 @@ a.section-3__card:focus-visible {
 }
 
 @media (max-width: 1024px) {
-  .sell-results__panel {
-    width: calc(100% - 32px);
-    padding: 48px 28px;
+  .sell-results-section {
+    padding: 48px var(--site-gutter-x);
     grid-template-columns: 1fr;
     gap: 30px;
   }
@@ -14409,15 +14405,18 @@ body.case-study-single-page.auction-single-page {
     flex-direction: column;
     gap: 12px;
     margin-top: 4px;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
   }
 
   .section-8__btn-primary,
   .section-8__btn-secondary {
-    width: auto;
-    min-width: 190px;
-    height: 46px;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    min-height: 46px;
+    justify-content: center;
   }
 
   .section-8__sales-card,
@@ -15637,11 +15636,6 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
   }
 
   .sell-results-section {
-    height: auto;
-    padding: 0 24px;
-  }
-
-  .sell-results__panel {
     width: 100%;
     height: auto;
     padding: 30px 24px;
@@ -15770,87 +15764,11 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     margin: 0 auto;
   }
 
-  .sell-hero {
-    width: 100%;
-    height: 300px;
-    margin: 6px 0;
-    border-radius: 16px;
-  }
+  /* Sell hero mobile — see .sell-page .sell-hero at end of mobile design system block */
 
-  .sell-hero__overlay {
-    background: linear-gradient(180deg, rgba(30, 30, 30, 0.88) 18%, rgba(30, 30, 30, 0.42) 100%);
-  }
-
-  .sell-hero__content {
-    max-width: 100%;
-    padding: 98px 12px 16px;
-  }
-
-  .sell-hero__content h1 {
-    width: 100%;
-    height: auto;
-    font-size: 22px;
-    line-height: 28px;
-  }
-
-  .sell-hero__content p {
-    margin-top: 12px;
-    font-size: 12px;
-    line-height: 17px;
-  }
-
-  .sell-trusted-section {
-    min-height: 0;
-    padding: 20px 12px;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    border-radius: 16px;
-  }
-
-  .sell-trusted__media {
-    min-height: 0;
-  }
-
-  .sell-trusted__img-main {
-    width: 100%;
-    height: 160px;
-    border-radius: 12px;
-  }
-
-  .sell-trusted__content h2 {
-    font-size: 18px;
-    line-height: 24px;
-  }
-
-  .sell-trusted__content p {
-    font-size: 11px;
-    line-height: 16px;
-  }
-
-  .sell-trusted__list {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .sell-trusted__actions {
-    margin-top: 14px;
-    flex-direction: row;
-    gap: var(--site-gutter);
-  }
-
-  .sell-trusted__btn {
-    width: auto;
-    height: 32px;
-    padding: 0 12px;
-    font-size: 11px;
-  }
+  /* Sell trusted section mobile — see .sell-page block at end of mobile design system */
 
   .sell-results-section {
-    height: auto;
-    padding: 0 4px;
-  }
-
-  .sell-results__panel {
     width: 100%;
     height: auto;
     padding: 18px 14px;
@@ -19403,16 +19321,295 @@ body.home-page .process-scroll-track {
   }
 }
 
-/* Sell page: full rounded frame for testimonials (match bottom radius on top) */
-.sell-page .section-5-placeholder {
-  border-top-left-radius: 48px;
-  border-top-right-radius: 48px;
+/* ============================================
+   SELL PAGE: SECTION SPACING (INDEX PARITY)
+   ============================================ */
+.sell-page {
+  overflow-x: hidden;
+  --sell-section-radius: var(--home-section-radius, 32px);
 }
 
-/* Sell page: "How Selling with Skylarc Works" — match section-4 bottom radius (32px) on top */
+@media (max-width: 1279px) {
+  .sell-page {
+    --sell-section-radius: var(--space-3);
+  }
+}
+
+@media (max-width: 767px) {
+  .sell-page {
+    --sell-section-radius: var(--space-2);
+  }
+}
+
+.sell-page .sell-trusted-section,
+.sell-page .sell-results-section,
+.sell-page .sell-faq-section,
+.sell-page .sell-pricing-section,
+.sell-page .sell-contact-section,
+.sell-page .section-5-placeholder,
+.sell-page .section-8-cta {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+.sell-page .sell-trusted-section {
+  min-height: 0;
+  height: auto;
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+  gap: var(--layout-heading-to-content);
+}
+
+.sell-page .process-scroll-track {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
 .sell-page .process-scroll-track .section-4-placeholder {
-  border-top-left-radius: 32px;
-  border-top-right-radius: 32px;
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+  overflow: hidden;
+}
+
+.sell-page .process-scroll-track .process-heading {
+  margin-bottom: var(--layout-heading-to-content);
+}
+
+.sell-page .sell-results-section {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  height: auto;
+  min-height: 0;
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  background: #1f1a20;
+  border-radius: var(--sell-section-radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(380px, 1.25fr);
+  gap: 40px;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.sell-page .sell-faq-section {
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+}
+
+.sell-page .sell-pricing-section {
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+}
+
+.sell-page .sell-contact-section {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+}
+
+.sell-page .section-5-placeholder {
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+}
+
+.sell-page .section-8-cta {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: var(--layout-section-padding-y) var(--site-gutter-x);
+  border-radius: var(--sell-section-radius);
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sell-page .sell-trusted-section,
+  .sell-page .sell-results-section,
+  .sell-page .sell-faq-section,
+  .sell-page .sell-pricing-section,
+  .sell-page .sell-contact-section,
+  .sell-page .process-scroll-track .section-4-placeholder,
+  .sell-page .section-5-placeholder,
+  .sell-page .section-8-cta {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .sell-page .sell-trusted-section {
+    padding-left: var(--site-gutter-x);
+    padding-right: var(--site-gutter-x);
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .sell-page .sell-trusted__media {
+    min-height: 0;
+  }
+
+  .sell-page .sell-trusted__img-main {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    aspect-ratio: 567 / 550;
+    margin: 0 auto;
+  }
+
+  .sell-page .sell-results-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-left: var(--site-gutter-x);
+    padding-right: var(--site-gutter-x);
+  }
+
+  .sell-page .sell-pricing__content {
+    gap: 32px;
+  }
+
+  .sell-page .section-8-cta {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 767px) {
+  .sell-page .process-scroll-track {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .sell-page .process-scroll-track .section-4-placeholder {
+    padding: var(--mobile-section-y) var(--site-gutter-x) var(--mobile-section-y-lg);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .sell-page .process-scroll-track .section-4__title {
+    font-size: 28px;
+    line-height: 1.2;
+    text-align: left;
+  }
+
+  .sell-page .process-scroll-track .section-4__subtitle {
+    font-size: 15px;
+    line-height: 1.45;
+    text-align: left;
+  }
+
+  .sell-page .process-scroll-track .process-heading {
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .sell-page .sell-results-section {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 32px var(--site-gutter-x) var(--mobile-section-y-lg);
+    border-radius: 24px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .sell-page .sell-results__title-wrap {
+    transform: none;
+  }
+
+  .sell-page .sell-results__title {
+    width: 100%;
+    height: auto;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .sell-page .sell-results-section.sell-results--animate-ready.sell-results--in-view .sell-results__title-wrap {
+    transform: none;
+  }
+
+  .sell-page .sell-faq-section {
+    padding: 32px 24px var(--mobile-section-y-lg);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .sell-page .sell-faq__title {
+    height: auto;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .sell-page .sell-faq__subtitle {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .sell-page .sell-faq__list {
+    margin-top: 24px;
+  }
+
+  .sell-page .sell-pricing-section {
+    padding: 32px 24px var(--mobile-section-y-lg);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .sell-page .sell-pricing__title {
+    height: auto;
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .sell-page .sell-pricing__text {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .sell-page .sell-contact-section {
+    padding: 32px 24px var(--mobile-section-y-lg);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .sell-page .sell-contact__title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .sell-page .sell-contact__subtitle {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .sell-page .section-8-cta {
+    padding: var(--mobile-section-y) var(--site-gutter-x);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Sell page: full rounded frame for testimonials (match bottom radius on top) */
+  .sell-page .section-5-placeholder {
+    border-top-left-radius: 48px;
+    border-top-right-radius: 48px;
+  }
+
+  /* Sell page: "How Selling with Skylarc Works" — match section-4 bottom radius on top */
+  .sell-page .process-scroll-track .section-4-placeholder {
+    border-top-left-radius: var(--sell-section-radius, 32px);
+    border-top-right-radius: var(--sell-section-radius, 32px);
+  }
 }
 
 /* Sell page: testimonial carousel arrows sit OUTSIDE the reviews card with no background */
@@ -19541,49 +19738,6 @@ body.home-page .process-scroll-track {
   transform: none;
   box-shadow: none;
   text-decoration: none;
-}
-
-@media (max-width: 767px) {
-  .sell-page .section-5__reviews-wrap .section-5__reviews {
-    max-width: 100%;
-    min-height: 0;
-    height: auto;
-    padding: 16px;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .sell-page .section-5__image-placeholder {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-  }
-
-  .sell-page .section-5__review-list {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    gap: 0;
-  }
-
-  .sell-page .section-5__carousel-btn {
-    position: static;
-    transform: none;
-    width: auto;
-    height: auto;
-  }
-
-  .sell-page .section-5__carousel-btn--prev,
-  .sell-page .section-5__carousel-btn--next {
-    left: auto;
-    right: auto;
-    top: auto;
-    bottom: auto;
-  }
-
-  .sell-page .section-5__review-list {
-    padding: 0;
-  }
 }
 
 /* ============================================
@@ -20655,7 +20809,6 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     justify-content: center;
   }
 
-  .sell-hero__content,
   .about-page .hero__content,
   .auctions-page .auctions-hero__content {
     padding-left: var(--site-gutter-x);
@@ -20670,24 +20823,35 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
   }
 
   /* —— Section 5: What Our Clients Say (Figma mobile carousel) —— */
-  .home-page .section-5-placeholder {
+  .home-page .section-5-placeholder,
+  .sell-page .section-5-placeholder {
+    /* Full band width on mobile (override global min(1440px) + margin: auto) */
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+    overflow: hidden;
     padding: 32px;
     gap: 24px;
     border-radius: 16px;
   }
 
-  .home-page .section-5__header {
+  .home-page .section-5__header,
+  .sell-page .section-5__header {
     margin-bottom: 0;
     text-align: center;
   }
 
-  .home-page .section-5__title {
+  .home-page .section-5__title,
+  .sell-page .section-5__title {
     font-size: 28px;
     line-height: 1.2;
     text-align: center;
   }
 
-  .home-page .section-5__subtitle {
+  .home-page .section-5__subtitle,
+  .sell-page .section-5__subtitle {
     font-size: 15px;
     line-height: 1.45;
     text-align: center;
@@ -20696,7 +20860,8 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     margin-right: auto;
   }
 
-  .home-page .section-5__reviews-wrap {
+  .home-page .section-5__reviews-wrap,
+  .sell-page .section-5__reviews-wrap {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -20708,11 +20873,14 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
   }
 
   .home-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
-  .home-page .section-5__reviews-wrap .section-5__carousel-btn--next {
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn--prev,
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn--next,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn--next {
     margin: 0;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__reviews {
+  .home-page .section-5__reviews-wrap .section-5__reviews,
+  .sell-page .section-5__reviews-wrap .section-5__reviews {
     flex: 1;
     min-width: 0;
     width: auto;
@@ -20731,15 +20899,18 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     grid-template-columns: 1fr;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__reviews::before {
+  .home-page .section-5__reviews-wrap .section-5__reviews::before,
+  .sell-page .section-5__reviews-wrap .section-5__reviews::before {
     display: none;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__image-placeholder {
+  .home-page .section-5__reviews-wrap .section-5__image-placeholder,
+  .sell-page .section-5__reviews-wrap .section-5__image-placeholder {
     display: none !important;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-list {
+  .home-page .section-5__reviews-wrap .section-5__review-list,
+  .sell-page .section-5__reviews-wrap .section-5__review-list {
     display: block;
     width: 100%;
     min-height: 0;
@@ -20750,23 +20921,28 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     box-sizing: border-box;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-list::before {
+  .home-page .section-5__reviews-wrap .section-5__review-list::before,
+  .sell-page .section-5__reviews-wrap .section-5__review-list::before {
     content: none;
     display: none;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card::after {
+  .home-page .section-5__reviews-wrap .section-5__review-card::after,
+  .sell-page .section-5__reviews-wrap .section-5__review-card::after {
     content: none;
     display: none;
   }
 
   .home-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p,
-  .home-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img {
+  .sell-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) p,
+  .home-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img,
+  .sell-page .section-5__reviews-wrap .section-5__review-card:not(.section-5__review-card--active) .section-5__stars-img {
     color: #ffffff;
     opacity: 1;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card {
+  .home-page .section-5__reviews-wrap .section-5__review-card,
+  .sell-page .section-5__reviews-wrap .section-5__review-card {
     display: none;
     flex-direction: column;
     position: relative;
@@ -20787,7 +20963,8 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     text-align: left;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card::before {
+  .home-page .section-5__reviews-wrap .section-5__review-card::before,
+  .sell-page .section-5__reviews-wrap .section-5__review-card::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -20803,12 +20980,14 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     opacity: 0.92;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card > * {
+  .home-page .section-5__reviews-wrap .section-5__review-card > *,
+  .sell-page .section-5__reviews-wrap .section-5__review-card > * {
     position: relative;
     z-index: 1;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card--active {
+  .home-page .section-5__reviews-wrap .section-5__review-card--active,
+  .sell-page .section-5__reviews-wrap .section-5__review-card--active {
     display: flex;
     background: rgba(255, 255, 255, 0.1);
     box-shadow:
@@ -20819,7 +20998,8 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     opacity: 1;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card--active::before {
+  .home-page .section-5__reviews-wrap .section-5__review-card--active::before,
+  .sell-page .section-5__reviews-wrap .section-5__review-card--active::before {
     background:
       linear-gradient(to bottom, rgba(49, 42, 47, 0.95) 0%, rgba(49, 42, 47, 0) 18%),
       linear-gradient(to top, rgba(49, 42, 47, 0.95) 0%, rgba(49, 42, 47, 0) 18%),
@@ -20829,18 +21009,22 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
   }
 
   .home-page .section-5__reviews-wrap .section-5__review-list .section-5__review-card:first-child,
-  .home-page .section-5__reviews-wrap .section-5__review-list .section-5__review-card:last-child {
+  .sell-page .section-5__reviews-wrap .section-5__review-list .section-5__review-card:first-child,
+  .home-page .section-5__reviews-wrap .section-5__review-list .section-5__review-card:last-child,
+  .sell-page .section-5__reviews-wrap .section-5__review-list .section-5__review-card:last-child {
     border: none;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__stars {
+  .home-page .section-5__reviews-wrap .section-5__stars,
+  .sell-page .section-5__reviews-wrap .section-5__stars {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 12px;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__stars-img {
+  .home-page .section-5__reviews-wrap .section-5__stars-img,
+  .sell-page .section-5__reviews-wrap .section-5__stars-img {
     height: 20px;
     width: auto;
     max-width: none;
@@ -20848,7 +21032,8 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     object-position: left center;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__review-card p {
+  .home-page .section-5__reviews-wrap .section-5__review-card p,
+  .sell-page .section-5__reviews-wrap .section-5__review-card p {
     font-size: 14px;
     line-height: 1.5;
     text-align: left;
@@ -20857,7 +21042,8 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     max-width: none;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__carousel-btn {
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20881,24 +21067,30 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
   }
 
   .home-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn:hover,
   .home-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
-  .home-page .section-5__reviews-wrap .section-5__carousel-btn:active {
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn:focus,
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn:active,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn:active {
     background: transparent;
     transform: none;
     box-shadow: none;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__carousel-btn img {
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn img,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn img {
     width: 22px;
     height: 22px;
     opacity: 1;
   }
 
-  .home-page .section-5__reviews-wrap .section-5__carousel-btn--prev img {
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn--prev img,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn--prev img {
     transform: rotate(-90deg);
   }
 
-  .home-page .section-5__reviews-wrap .section-5__carousel-btn--next img {
+  .home-page .section-5__reviews-wrap .section-5__carousel-btn--next img,
+  .sell-page .section-5__reviews-wrap .section-5__carousel-btn--next img {
     transform: rotate(-90deg);
   }
 
@@ -21265,5 +21457,272 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     line-height: 1.35 !important;
     color: #ffffff !important;
     text-align: center;
+  }
+
+  /* —— Sell page hero (Figma mobile section container) —— */
+  .sell-page .sell-hero {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    position: relative;
+    width: auto;
+    max-width: none;
+    margin: 0 var(--space-1);
+    min-height: 360px;
+    height: auto;
+    padding: var(--space-1) var(--space-1) var(--space-11);
+    gap: var(--space-11);
+    border-radius: 24px;
+    border-width: 0;
+    overflow: hidden;
+  }
+
+  .sell-page .sell-hero::before {
+    border-radius: 24px;
+  }
+
+  .sell-page .sell-hero__overlay {
+    border-radius: 24px;
+    background: linear-gradient(
+      180deg,
+      rgba(30, 30, 30, 0.88) 0%,
+      rgba(30, 30, 30, 0.55) 45%,
+      rgba(30, 30, 30, 0.72) 100%
+    );
+  }
+
+  .sell-page .sell-hero .navbar {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0;
+    z-index: 3;
+  }
+
+  .sell-page .sell-hero .navbar__container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .sell-page .sell-hero__content {
+    position: relative;
+    z-index: 2;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+
+  .sell-page .sell-hero__content h1 {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    font-size: clamp(28px, 7.8vw, 34px);
+    line-height: 1.14;
+    letter-spacing: -0.02em;
+  }
+
+  .sell-page .sell-hero__content p {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* —— Sell page: Trusted specialists (Figma mobile) —— */
+  .sell-page .sell-trusted-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    min-height: 0;
+    height: auto;
+    padding: 32px var(--site-gutter-x);
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    grid-template-columns: none;
+  }
+
+  .sell-page .sell-trusted__media {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .sell-page .sell-trusted__img-main {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .sell-page .sell-trusted__img-main-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 20px;
+  }
+
+  .sell-page .sell-trusted__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sell-page .sell-trusted__content h2 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #1f1a1d;
+  }
+
+  .sell-page .sell-trusted__content p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #605b5e;
+  }
+
+  .sell-page .sell-trusted__list {
+    margin: 0;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+    row-gap: 12px;
+  }
+
+  .sell-page .sell-trusted__list li {
+    font-size: 14px;
+    line-height: 1.35;
+    color: #383035;
+    padding-left: 18px;
+  }
+
+  .sell-page .sell-trusted__actions {
+    margin-top: 4px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .sell-page .sell-trusted__btn {
+    width: 100%;
+    min-height: 48px;
+    height: auto;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .sell-page .sell-trusted__btn--secondary {
+    background: #ffe8d4;
+    color: #ff6600;
+  }
+
+  /* —— Sell page: Auction results (Figma mobile) —— */
+  .sell-page .sell-results-section {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 32px var(--site-gutter-x) var(--mobile-section-y-lg);
+    background: #312a2f;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    grid-template-columns: none;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .sell-page .sell-results__title-wrap {
+    transform: none;
+    align-self: stretch;
+  }
+
+  .sell-page .sell-results-section.sell-results--animate-ready .sell-results__title-wrap {
+    transform: translate(-24px, 0);
+  }
+
+  .sell-page .sell-results-section.sell-results--animate-ready.sell-results--in-view .sell-results__title-wrap {
+    transform: translate(0, 0);
+  }
+
+  .sell-page .sell-results-section.sell-results--animate-ready.sell-results--in-view {
+    transform: translateY(0);
+  }
+
+  .sell-page .sell-results__title {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-align: left;
+    text-transform: none;
+    color: #ffffff;
+  }
+
+  .sell-page .sell-results__content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    max-width: none;
+  }
+
+  .sell-page .sell-results__description {
+    max-width: none;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #b0b0b0;
+    text-align: left;
+  }
+
+  .sell-page .sell-results__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 24px;
+    width: 100%;
+  }
+
+  .sell-page .sell-results__stat-item h3 {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  .sell-page .sell-results__stat-item p {
+    margin: 10px 0 0;
+    font-size: 14px;
+    line-height: 1.3;
+    color: #b0b0b0;
+    text-align: left;
   }
 }
