@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initSectionSixScrollAnimation();
   initSectionSevenScrollAnimation();
   initSectionEightScrollAnimation();
+  initHomeRsBottomLayoutScrollAnimation();
   initFooterScrollAnimation();
   initSellTrustedScrollAnimation();
   initSellResultsScrollAnimation();
@@ -345,20 +346,41 @@ function initNavigation() {
   const hamburger = document.getElementById('hamburger');
   const navMenu = document.getElementById('navMenu');
   const navLinks = document.querySelectorAll('.navbar__link');
+  const navCta = document.querySelector('.navbar__actions .btn--navbar-primary');
+
+  function syncMobileNavCta() {
+    if (!navMenu || !navCta) return;
+    const existing = navMenu.querySelector('.navbar__mobile-cta');
+    if (window.innerWidth > 1024) {
+      if (existing) existing.remove();
+      return;
+    }
+    if (navMenu.querySelector('.navbar__mobile-cta')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'navbar__mobile-cta';
+    wrap.appendChild(navCta.cloneNode(true));
+    navMenu.appendChild(wrap);
+  }
+
+  function setNavOpen(open) {
+    if (!hamburger || !navMenu) return;
+    hamburger.classList.toggle('active', open);
+    navMenu.classList.toggle('active', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.classList.toggle('nav-open', open);
+  }
 
   function closeNavMenu() {
-    if (!hamburger || !navMenu) return;
-    hamburger.classList.remove('active');
-    navMenu.classList.remove('active');
-    hamburger.setAttribute('aria-expanded', 'false');
+    setNavOpen(false);
   }
+
+  syncMobileNavCta();
 
   // Mobile menu toggle
   if (hamburger) {
-    hamburger.addEventListener('click', function() {
-      hamburger.classList.toggle('active');
-      navMenu.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      setNavOpen(!hamburger.classList.contains('active'));
     });
   }
 
@@ -383,6 +405,7 @@ function initNavigation() {
 
   // Reset dropdown menu when leaving tablet/mobile breakpoints
   window.addEventListener('resize', function() {
+    syncMobileNavCta();
     if (window.innerWidth > 1024) {
       closeNavMenu();
     }
@@ -479,6 +502,13 @@ function initSectionTwoScrollAnimation() {
     const delay = 0.2 + index * 0.12;
     card.style.setProperty('--card-delay', `${delay}s`);
   });
+
+  const isMobileSectionTwo = window.matchMedia('(max-width: 767px)').matches;
+  if (isMobileSectionTwo) {
+    sectionTwo.classList.add('section-2--in-view');
+    animateSectionTwoCounters(sectionTwo);
+    return;
+  }
 
   const observer = new IntersectionObserver((entries, sectionObserver) => {
     entries.forEach(entry => {
@@ -627,9 +657,11 @@ function initSectionThreeScrollAnimation() {
     card.style.setProperty('--card-delay', `${delay}s`);
   });
 
+  const isMobileSectionThree = window.matchMedia('(max-width: 767px)').matches;
+
   toggleSectionInView(sectionThree, {
-    threshold: 0.18,
-    rootMargin: '0px 0px -70px 0px',
+    threshold: isMobileSectionThree ? 0.12 : 0.18,
+    rootMargin: isMobileSectionThree ? '0px' : '0px 0px -70px 0px',
     inViewClass: 'section-3--in-view'
   });
 }
@@ -800,17 +832,17 @@ function initSectionFiveScrollAnimation() {
 function initSectionFiveMobileCarousel() {
   const mq = window.matchMedia('(max-width: 767px)');
   document.querySelectorAll('.section-5-placeholder').forEach(section => {
+    const wrap = section.querySelector('.section-5__reviews-wrap');
     const list = section.querySelector('.section-5__review-list');
     const cards = list ? list.querySelectorAll('.section-5__review-card') : null;
-    const prev = list ? list.querySelector('.section-5__carousel-btn--prev') : null;
-    const next = list ? list.querySelector('.section-5__carousel-btn--next') : null;
+    const prev = wrap ? wrap.querySelector('.section-5__carousel-btn--prev') : null;
+    const next = wrap ? wrap.querySelector('.section-5__carousel-btn--next') : null;
     if (!list || !cards || cards.length < 2 || !prev || !next) return;
 
     let desktopActiveIndex = [...cards].findIndex(c => c.classList.contains('section-5__review-card--active'));
     if (desktopActiveIndex < 0) desktopActiveIndex = 0;
 
-    let index = [...cards].findIndex(c => c.classList.contains('section-5__review-card--active'));
-    if (index < 0) index = 0;
+    let index = desktopActiveIndex;
 
     function applyDesktop() {
       cards.forEach((c, i) => {
@@ -821,14 +853,19 @@ function initSectionFiveMobileCarousel() {
     function applyMobile() {
       const n = cards.length;
       index = ((index % n) + n) % n;
-      cards.forEach((c, i) => {
-        c.classList.toggle('section-5__review-card--active', i === index);
+      desktopActiveIndex = index;
+      cards.forEach((c, j) => {
+        c.classList.toggle('section-5__review-card--active', j === index);
       });
     }
 
     function sync() {
-      if (mq.matches) applyMobile();
-      else applyDesktop();
+      if (mq.matches) {
+        if (index < 0) index = 1;
+        applyMobile();
+      } else {
+        applyDesktop();
+      }
     }
 
     prev.addEventListener('click', () => {
@@ -849,6 +886,7 @@ function initSectionFiveMobileCarousel() {
         applyDesktop();
       }
     });
+
     mq.addEventListener('change', sync);
     sync();
   });
@@ -896,6 +934,18 @@ function initSectionEightScrollAnimation() {
       rootMargin: '0px 0px -80px 0px',
       inViewClass: 'section-8--in-view'
     });
+  });
+}
+
+function initHomeRsBottomLayoutScrollAnimation() {
+  const bottomLayout = document.querySelector('.home-page .rs-bottom-layout');
+  if (!bottomLayout) return;
+
+  bottomLayout.classList.add('rs-bottom-layout--animate-ready');
+  toggleSectionInView(bottomLayout, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -80px 0px',
+    inViewClass: 'rs-bottom-layout--in-view'
   });
 }
 
