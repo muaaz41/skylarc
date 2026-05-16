@@ -79,9 +79,9 @@
               Many auction platforms add a buyer&apos;s premium — a percentage fee
               added on top of the winning bid. This increases the final amount
               the buyer must pay and can reduce bidding confidence.
-              <br /><br />
-              Skylarc keeps auctions simple and transparent.
-              <br /><br />The winning bid is
+            </p>
+            <p>
+              Skylarc keeps auctions simple and transparent. The winning bid is
               the final price — no additional buyer&apos;s premium is added.
             </p>
           </div>
@@ -116,22 +116,22 @@
 
       </div>
 
-      <div class="rs-bottom-layout">
-        <div class="rs-sales-card">
+      <section class="section-8-cta">
+        <div class="section-8__sales-card">
           <img src="assets/stat-pad.svg" alt="Sales performance summary chart" />
         </div>
-        <div class="rs-cta-content">
+        <div class="section-8__content">
           <h3>Ready To Maximise Your Asset Sale?</h3>
-          <p>Talk to our experienced team about your assets.</p>
-          <div class="rs-cta-actions">
+          <p>Talk to our experienced team about your assets and get a clear, no-obligation proposal.</p>
+          <div class="section-8__actions">
             <a href="contact.html" class="btn btn--primary btn--md section-8__btn-primary">Discuss Your Assets</a>
             <a href="contact.html" class="btn btn--secondary btn--md section-8__btn-secondary">Contact Us</a>
           </div>
         </div>
-        <div class="rs-metrics-card">
+        <div class="section-8__metrics-card">
           <img src="assets/perf.svg" alt="Auction performance summary metrics" />
         </div>
-      </div>
+      </section>
     </main>
     <footer class="footer">
       <div class="footer__container">
@@ -334,24 +334,6 @@
         });
 
         featureObserver.observe(featureSection);
-      }
-
-      const bottomCta = document.querySelector(".rs-bottom-layout");
-      if (bottomCta) {
-        bottomCta.classList.add("rs-bottom-layout--animate-ready");
-
-        const bottomObserver = new IntersectionObserver((entries, observer) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            bottomCta.classList.add("rs-bottom-layout--in-view");
-            observer.unobserve(entry.target);
-          });
-        }, {
-          threshold: 0.2,
-          rootMargin: "0px 0px -80px 0px"
-        });
-
-        bottomObserver.observe(bottomCta);
       }
 
       tabs.forEach((tab) => {
