@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initSellTrustedScrollAnimation();
   initSellResultsScrollAnimation();
   initSellFaqScrollAnimation();
+  initSellFaqAccordion();
   initSellPricingScrollAnimation();
   initSellContactScrollAnimation();
   initContactDetailsScrollAnimation();
@@ -1026,11 +1027,124 @@ function initSellResultsScrollAnimation() {
   observer.observe(section);
 }
 
+const faqMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function getFaqAnswerHeight(answer) {
+  const prevHeight = answer.style.height;
+  answer.style.height = 'auto';
+  const height = answer.scrollHeight;
+  answer.style.height = prevHeight;
+  return height;
+}
+
+function initHeightFaqAccordion(list, config) {
+  if (!list) return;
+
+  const {
+    itemSelector,
+    triggerSelector,
+    answerSelector,
+    openClass,
+    defaultOpenClass
+  } = config;
+
+  const items = list.querySelectorAll(itemSelector);
+
+  function setFaqItemOpen(item, open, animate) {
+    const trigger = item.querySelector(triggerSelector);
+    const answer = item.querySelector(answerSelector);
+    if (!trigger || !answer) return;
+
+    const shouldAnimate = animate && !faqMotionQuery.matches;
+
+    if (open) {
+      item.classList.add(openClass);
+      trigger.setAttribute('aria-expanded', 'true');
+      answer.setAttribute('aria-hidden', 'false');
+
+      const targetHeight = getFaqAnswerHeight(answer);
+      if (!shouldAnimate) {
+        answer.style.height = `${targetHeight}px`;
+        return;
+      }
+
+      answer.style.height = '0px';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          answer.style.height = `${targetHeight}px`;
+        });
+      });
+      return;
+    }
+
+    const startHeight = answer.scrollHeight;
+    item.classList.remove(openClass);
+    trigger.setAttribute('aria-expanded', 'false');
+    answer.setAttribute('aria-hidden', 'true');
+
+    if (!shouldAnimate) {
+      answer.style.height = '0px';
+      return;
+    }
+
+    answer.style.height = `${startHeight}px`;
+    requestAnimationFrame(() => {
+      answer.style.height = '0px';
+    });
+  }
+
+  items.forEach((item) => {
+    const trigger = item.querySelector(triggerSelector);
+    const answer = item.querySelector(answerSelector);
+    if (!trigger || !answer) return;
+
+    const isOpen = item.classList.contains(openClass);
+    if (!isOpen) {
+      answer.style.height = '0px';
+    } else if (item.classList.contains(defaultOpenClass)) {
+      answer.style.height = 'auto';
+    } else {
+      answer.style.height = `${getFaqAnswerHeight(answer)}px`;
+    }
+
+    answer.addEventListener('transitionend', (event) => {
+      if (event.propertyName !== 'height' || !item.classList.contains(openClass)) return;
+      answer.style.height = 'auto';
+    });
+
+    trigger.addEventListener('click', () => {
+      items.forEach((entry) => entry.classList.remove(defaultOpenClass));
+
+      const willOpen = !item.classList.contains(openClass);
+      items.forEach((entry) => {
+        if (entry === item) return;
+        if (entry.classList.contains(openClass)) {
+          setFaqItemOpen(entry, false, true);
+        }
+      });
+      setFaqItemOpen(item, willOpen, true);
+    });
+  });
+}
+
+function initSellFaqAccordion() {
+  const list = document.querySelector('.sell-faq__list');
+  if (!list) return;
+
+  initHeightFaqAccordion(list, {
+    itemSelector: '.sell-faq__item',
+    triggerSelector: '.sell-faq__trigger',
+    answerSelector: '.sell-faq__answer',
+    openClass: 'sell-faq__item--open',
+    defaultOpenClass: 'sell-faq__default-open'
+  });
+}
+
 function initSellFaqScrollAnimation() {
   const section = document.querySelector('.sell-faq-section');
   if (!section) return;
 
-  const faqRows = section.querySelectorAll('.sell-faq__list details');
+  const faqRows = section.querySelectorAll('.sell-faq__list .sell-faq__item');
   section.classList.add('sell-faq--animate-ready');
 
   faqRows.forEach((row, index) => {

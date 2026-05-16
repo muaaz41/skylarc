@@ -6433,6 +6433,10 @@ a.section-3__card:focus-visible {
 }
 
 .sell-faq__list {
+  --sell-faq-panel-duration: 0.85s;
+  --sell-faq-content-duration: 0.68s;
+  --sell-faq-motion-duration: 0.85s;
+  --sell-faq-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   width: min(736px, 100%);
   margin: 30px auto 0;
   padding-bottom: 12px;
@@ -6441,33 +6445,74 @@ a.section-3__card:focus-visible {
   gap: 16px;
 }
 
-.sell-faq__list details {
+.sell-faq__list .sell-faq__item {
   width: 100%;
   min-height: 0;
   border-radius: 16px;
   border: 1px solid #eceff3;
   background: #f6f7f9;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.sell-faq__list details:not([open]) {
-  height: auto;
-}
-
-.sell-faq__list details:hover {
+.sell-faq__list .sell-faq__item:hover {
   border-color: #e2e7ef;
   background: #ffffff;
 }
 
-.sell-faq__list details[open] {
+.sell-faq__list .sell-faq__item.sell-faq__item--open {
   border-color: #dfe5ed;
   background: #ffffff;
   box-shadow: none;
 }
 
-.sell-faq__list summary {
-  list-style: none;
+.sell-faq__answer {
+  height: 0;
+  overflow: hidden;
+  transition: height var(--sell-faq-panel-duration) var(--sell-faq-ease);
+  will-change: height;
+}
+
+.sell-faq__answer-inner {
+  overflow: hidden;
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition:
+    opacity var(--sell-faq-content-duration) ease,
+    transform var(--sell-faq-content-duration) var(--sell-faq-ease);
+}
+
+.sell-faq__item:not(.sell-faq__item--open) .sell-faq__answer-inner {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition-delay: 0s;
+}
+
+.sell-faq__item.sell-faq__item--open .sell-faq__answer-inner {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: calc(var(--sell-faq-panel-duration) * 0.2);
+}
+
+.sell-faq__item.sell-faq__default-open.sell-faq__item--open .sell-faq__answer {
+  transition: none;
+}
+
+.sell-faq__item.sell-faq__default-open.sell-faq__item--open .sell-faq__answer-inner {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: none;
+}
+
+.sell-faq__trigger {
+  width: 100%;
+  margin: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: inherit;
   cursor: pointer;
   padding: 24px 32px;
   display: flex;
@@ -6482,12 +6527,12 @@ a.section-3__card:focus-visible {
   color: #3f4754;
 }
 
-.sell-faq__list details[open] summary {
+.sell-faq__item.sell-faq__item--open .sell-faq__trigger {
   font-weight: 600;
   color: #1f1a1d;
 }
 
-.sell-faq__list details[open] summary span {
+.sell-faq__item.sell-faq__item--open .sell-faq__trigger span {
   font-weight: 600;
 }
 
@@ -6504,10 +6549,6 @@ a.section-3__card:focus-visible {
   letter-spacing: -0.01em;
 }
 
-.sell-faq__list summary::-webkit-details-marker {
-  display: none;
-}
-
 .sell-faq__arrow {
   width: 24px;
   height: 24px;
@@ -6520,45 +6561,56 @@ a.section-3__card:focus-visible {
   width: 24px;
   height: 24px;
   display: block;
-  transition: transform 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  transition: transform var(--sell-faq-motion-duration) var(--sell-faq-ease);
 }
 
-.sell-faq__arrow .arrow-up {
-  display: none !important;
-}
-
-.sell-faq__list details[open] .sell-faq__arrow .arrow-down {
-  display: block;
+.sell-faq__item.sell-faq__item--open .sell-faq__arrow img {
   transform: rotate(180deg);
+}
+
+.sell-faq__item.sell-faq__default-open.sell-faq__item--open .sell-faq__arrow img {
+  transform: rotate(180deg);
+  transition: none;
 }
 
 .sell-faq__list p {
   margin: 0;
-  padding: 0 32px 0;
+  padding: 0 32px 24px;
   font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.02em;
   color: #4b5461;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transform: translateY(-4px);
-  transition: max-height 1.15s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.95s ease, transform 0.95s ease, padding-bottom 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.sell-faq__list details[open] p {
-  max-height: 320px;
-  opacity: 1;
-  transform: translateY(0);
-  padding-bottom: 24px;
-  transition-delay: 0s;
+@media (prefers-reduced-motion: reduce) {
+  .sell-faq__list {
+    --sell-faq-panel-duration: 0.01ms;
+    --sell-faq-content-duration: 0.01ms;
+    --sell-faq-motion-duration: 0.01ms;
+  }
+
+  .sell-faq__answer,
+  .sell-faq__answer-inner {
+    transition-duration: 0.01ms;
+    transition-delay: 0s !important;
+  }
+
+  .sell-faq__arrow img {
+    transition-duration: 0.01ms;
+  }
+
+  .sell-faq__item.sell-faq__item--open .sell-faq__answer-inner {
+    transform: none;
+  }
 }
 
 .sell-faq-section.sell-faq--animate-ready .sell-faq__title,
 .sell-faq-section.sell-faq--animate-ready .sell-faq__subtitle,
-.sell-faq-section.sell-faq--animate-ready .sell-faq__list details {
+.sell-faq-section.sell-faq--animate-ready .sell-faq__list .sell-faq__item {
   opacity: 0;
   transform: translateY(16px);
   transition: transform 0.55s ease-out, opacity 0.55s ease-out;
@@ -6566,7 +6618,7 @@ a.section-3__card:focus-visible {
 
 .sell-faq-section.sell-faq--animate-ready.sell-faq--in-view .sell-faq__title,
 .sell-faq-section.sell-faq--animate-ready.sell-faq--in-view .sell-faq__subtitle,
-.sell-faq-section.sell-faq--animate-ready.sell-faq--in-view .sell-faq__list details {
+.sell-faq-section.sell-faq--animate-ready.sell-faq--in-view .sell-faq__list .sell-faq__item {
   opacity: 1;
   transform: translateY(0);
 }
@@ -6579,7 +6631,7 @@ a.section-3__card:focus-visible {
   transition-delay: 0.2s;
 }
 
-.sell-faq-section.sell-faq--animate-ready.sell-faq--in-view .sell-faq__list details {
+.sell-faq-section.sell-faq--animate-ready.sell-faq--in-view .sell-faq__list .sell-faq__item {
   transition-delay: var(--faq-row-delay, 0.8s);
 }
 
@@ -8382,25 +8434,30 @@ a.section-3__card:focus-visible {
 }
 
 .contact-page .pickup-section {
-  background: #fff3eb;
-  padding: 48px 72px;
-  display: flex;
-  align-items: center;
-  gap: 48px;
+  --contact-pickup-radius: 24px;
+  --contact-pickup-inner-radius: 12px;
   width: 100%;
   max-width: none;
-  min-height: 708px;
-  border-radius: 24px;
   margin: 0;
+  padding: clamp(40px, 5vw, 72px) var(--site-gutter-x);
+  box-sizing: border-box;
+  background: #fff3eb;
+  border-radius: var(--contact-pickup-radius);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: stretch;
+  gap: clamp(28px, 4vw, 48px);
+  min-height: 0;
 }
 
 .contact-page .pickup-image {
-  width: 50%;
+  width: 100%;
   max-width: 620px;
-  height: 420px;
-  border-radius: 12px;
+  height: clamp(240px, 32vw, 420px);
+  border-radius: var(--contact-pickup-inner-radius);
   overflow: hidden;
-  flex-shrink: 0;
+  justify-self: center;
   background: #d7d7d7;
 }
 
@@ -8412,38 +8469,67 @@ a.section-3__card:focus-visible {
 }
 
 .contact-page .pickup-content {
-  flex: 1;
+  width: 100%;
   max-width: 660px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-self: start;
+  text-align: left;
 }
 
 .contact-page .pickup-content h2 {
   font-family: var(--font-primary);
-  font-size: 40px;
-  line-height: 52px;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.3;
   letter-spacing: -0.02em;
   color: #31292f;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+  width: 100%;
 }
 
 .contact-page .pickup-content p,
-.contact-page .link-orange {
+.contact-page .pickup-content .link-orange {
   font-family: var(--font-primary);
+  width: 100%;
+  margin: 0;
 }
 
-.contact-page .link-orange {
+.contact-page .pickup-content p {
+  font-size: clamp(14px, 1.4vw, 18px);
+  line-height: 1.45;
+  color: #4b5461;
+}
+
+.contact-page .pickup-content .link-orange {
+  display: inline-block;
+  margin-top: 8px;
   color: var(--color-primary);
+  text-decoration: none;
+}
+
+.contact-page .pickup-content .link-orange:hover {
+  text-decoration: underline;
 }
 
 .contact-page .pickup-form {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--site-gutter);
   margin-top: 18px;
+  width: 100%;
+  max-width: 608px;
 }
 
 .contact-page .pickup-form input {
-  width: min(608px, 100%);
+  width: 100%;
+  max-width: none;
+}
+
+.contact-page .pickup-form .btn-continue {
+  width: 100%;
+  max-width: none;
 }
 
 .contact-page .btn-continue {
@@ -8567,39 +8653,53 @@ a.section-3__card:focus-visible {
   }
 
   .contact-page .pickup-section {
-    padding: 40px 32px;
-    min-height: 0;
+    --contact-pickup-radius: 20px;
+    --contact-pickup-inner-radius: 12px;
+    padding: 56px var(--site-gutter-x);
     gap: 28px;
-    border-radius: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .contact-page .pickup-image {
-    width: 45%;
-    height: 320px;
+    width: 100%;
+    max-width: 100%;
+    height: clamp(220px, 34vw, 320px);
   }
 
   .contact-page .pickup-content h2 {
     font-size: 34px;
-    line-height: 44px;
   }
 }
 
 @media (max-width: 767px) {
+  .contact-page .hero-wrap {
+    padding-top: 0;
+    padding-bottom: clamp(240px, 62vw, 290px);
+    background: #ffffff;
+  }
+
   .contact-page .contact-hero {
     width: calc(100% - 20px);
     max-width: none;
-    margin: 0 10px;
-    min-height: 0;
-    border-radius: 16px;
+    height: auto;
+    min-height: 360px;
+    margin: 10px 10px 0;
+    border-radius: 20px;
+    overflow: visible;
   }
 
   .contact-page .contact-hero-bg,
   .contact-page .contact-hero-bg::after {
-    border-radius: 16px;
+    border-radius: 20px;
   }
 
   .contact-page .contact-hero-bg::after {
-    background: linear-gradient(180deg, rgba(30, 30, 30, 0.88) 18%, rgba(30, 30, 30, 0.35) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(22, 22, 22, 0.78) 0%,
+      rgba(22, 22, 22, 0.62) 42%,
+      rgba(22, 22, 22, 0.28) 100%
+    );
   }
 
   .contact-page .contact-hero-inner {
@@ -8607,117 +8707,206 @@ a.section-3__card:focus-visible {
     flex-direction: column !important;
     align-items: stretch !important;
     justify-content: flex-start !important;
-    padding: 92px 16px 6px !important;
-    gap: 8px !important;
+    position: relative;
+    min-height: 360px;
+    height: auto;
+    padding: 88px 16px 0 !important;
+    gap: 0 !important;
   }
 
   .contact-page .hero-text {
-    padding: 0 !important;
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+    padding: 4px 4px 0 !important;
     order: 1 !important;
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   .contact-page .hero-text h1 {
-    font-size: 34px;
-    line-height: 40px;
-    margin-bottom: 10px;
+    font-size: 32px;
+    line-height: 1.12;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
   }
 
   .contact-page .hero-text p {
     font-size: 14px;
-    line-height: 21px;
+    line-height: 1.45;
     margin-bottom: 0;
+    max-width: 100%;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .contact-page .hero-contact-info {
+    display: none;
   }
 
   .contact-page .contact-form-card {
-    width: 100% !important;
-    max-width: none !important;
-    padding: 12px;
-    border-radius: 16px;
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: clamp(-360px, -58vw, -335px) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 420px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 18px 16px 20px !important;
+    border-radius: 16px !important;
     order: 2 !important;
-    margin: 4px 0 0 !important;
-    position: relative;
-    z-index: 2;
-    align-self: stretch !important;
-    border: 1px solid #e7e7e7;
-    box-shadow: none;
+    align-self: center !important;
+    transform: translateX(-50%) !important;
+    z-index: 5;
+    border: 1px solid #e8e8e8 !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1) !important;
+    opacity: 1;
+    animation: none;
+  }
+
+  .contact-page .contact-form-card h3,
+  .contact-page .contact-form-fields .form-group,
+  .contact-page .contact-form-card .btn-submit {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .contact-page .contact-form-card .btn-submit:hover {
+    transform: none !important;
   }
 
   .contact-page .contact-form-card h3 {
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 18px;
+    line-height: 26px;
     margin: 0;
+    font-weight: 600;
+    color: #31292f;
   }
 
   .contact-page .contact-form-fields {
-    margin-top: 12px;
-    gap: var(--site-gutter);
+    margin-top: 16px;
+    gap: 12px;
+  }
+
+  .contact-page .contact-form-card .form-group input,
+  .contact-page .contact-form-card .form-group textarea {
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #e4e4e4;
   }
 
   .contact-page .form-group input {
-    min-height: var(--input-h-md);
-    height: var(--input-h-md);
+    min-height: 48px;
+    height: 48px;
   }
 
   .contact-page .form-group textarea {
-    min-height: 90px;
+    min-height: 112px;
+    height: 112px;
   }
 
   .contact-page .btn-submit {
-    margin-top: 14px;
+    margin-top: 16px;
+    width: 100%;
+    min-height: 48px;
+    height: 48px;
+    border-radius: 999px;
   }
 
   .contact-page .contact-details-section {
-    padding: 12px 16px 32px;
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: clamp(88px, 21vw, 108px) 24px 32px;
+    gap: 28px;
+    border-radius: 0;
+    background: #ffffff;
   }
 
   .contact-page .contact-details-grid {
-    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    gap: 28px;
+    align-items: flex-start;
+  }
+
+  .contact-page .detail-block {
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .contact-page .detail-icon-image {
+    width: 16px;
+    height: 16px;
+    margin-bottom: 2px;
   }
 
   .contact-page .detail-main {
-    font-size: 18px;
-    line-height: 26px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .contact-page .detail-main--no-underline {
+    font-weight: 600;
+    line-height: 1.35;
   }
 
   .contact-page .detail-sub {
-    font-size: 13px;
-    line-height: 19px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #6b6b6b;
+    text-align: left;
+    margin-top: 0;
   }
 
   .contact-page .map-container {
-    height: 240px;
-    border-radius: 12px;
+    width: 100%;
+    height: clamp(200px, 52vw, 240px);
+    border-radius: 14px;
+    margin-top: 0;
   }
 
   .contact-page .pickup-section {
-    padding: 24px 16px;
-    flex-direction: column;
-    align-items: stretch;
+    --contact-pickup-radius: 16px;
+    --contact-pickup-inner-radius: 10px;
+    width: 100%;
+    padding: var(--mobile-section-y) var(--site-gutter-x);
+    grid-template-columns: 1fr;
     gap: 16px;
-    border-radius: 16px;
+    justify-items: stretch;
   }
 
   .contact-page .pickup-image {
     width: 100%;
-    max-width: none;
-    height: 220px;
-    border-radius: 10px;
+    max-width: 100%;
+    height: clamp(200px, 52vw, 240px);
+    border-radius: var(--contact-pickup-inner-radius);
+    justify-self: stretch;
   }
 
   .contact-page .pickup-content {
+    width: 100%;
     max-width: 100%;
+    align-items: flex-start;
+    text-align: left;
+    justify-self: stretch;
   }
 
   .contact-page .pickup-content h2 {
     font-size: 28px;
-    line-height: 34px;
+    line-height: 1.2;
     margin-bottom: 8px;
   }
 
   .contact-page .pickup-content p {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 1.4;
   }
 
   .contact-page .pickup-content p br {
@@ -8728,16 +8917,20 @@ a.section-3__card:focus-visible {
     align-items: stretch;
     gap: var(--site-gutter);
     margin-top: 12px;
+    width: 100%;
+    max-width: none;
   }
 
   .contact-page .pickup-form input {
     width: 100%;
+    max-width: none;
     min-height: var(--input-h-md);
     height: var(--input-h-md);
   }
 
-  .contact-page .btn-continue {
+  .contact-page .pickup-form .btn-continue {
     width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -8965,9 +9158,10 @@ main.resources-page {
 }
 
 .resources-page .rs-faq-list {
-  --rs-faq-panel-duration: 1.15s;
-  /* Arrow rotation and answer fade share this duration */
-  --rs-faq-motion-duration: 1.15s;
+  --rs-faq-panel-duration: 0.85s;
+  --rs-faq-content-duration: 0.68s;
+  --rs-faq-motion-duration: 0.85s;
+  --rs-faq-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   width: min(736px, 100%);
   height: auto;
   margin: 0 auto;
@@ -8976,7 +9170,7 @@ main.resources-page {
   gap: 16px;
 }
 
-.resources-page .rs-faq-list details {
+.resources-page .rs-faq-list .rs-faq-item {
   width: 100%;
   min-height: 74px;
   border-radius: 16px;
@@ -8986,52 +9180,63 @@ main.resources-page {
   flex-direction: column;
 }
 
-.resources-page .rs-faq-list.rs-faq-list--animate-ready details {
+.resources-page .rs-faq-list.rs-faq-list--animate-ready .rs-faq-item {
   opacity: 0;
   transform: translateY(26px);
   transition: transform 0.68s ease, opacity 0.68s ease;
 }
 
-.resources-page .rs-faq-list.rs-faq-list--animate-in details {
+.resources-page .rs-faq-list.rs-faq-list--animate-in .rs-faq-item {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--rs-faq-row-delay, 0.14s);
 }
 
-.resources-page .rs-faq-list details:not([open]) {
-  min-height: 74px;
-}
-
 .resources-page .rs-faq-answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--rs-faq-panel-duration) cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.resources-page .rs-faq-list details[open] .rs-faq-answer {
-  grid-template-rows: 1fr;
+  height: 0;
+  overflow: hidden;
+  transition: height var(--rs-faq-panel-duration) var(--rs-faq-ease);
+  will-change: height;
 }
 
 .resources-page .rs-faq-answer-inner {
   overflow: hidden;
-  min-height: 0;
-}
-
-/* Hide answer copy only while collapsed — avoids invisible text when [open] but no helper class matched */
-.resources-page .rs-faq-list details:not([open]) .rs-faq-answer-inner {
   opacity: 0;
-  transform: translate3d(0, -12px, 0);
+  transform: translate3d(0, -8px, 0);
+  transition:
+    opacity var(--rs-faq-content-duration) ease,
+    transform var(--rs-faq-content-duration) var(--rs-faq-ease);
 }
 
-/* Same as default-expanded vendor row: panel animates (grid); answer copy shows with no extra stagger */
-.resources-page .rs-faq-list details[open] .rs-faq-answer-inner {
+.resources-page .rs-faq-item:not(.rs-faq-item--open) .rs-faq-answer-inner {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition-delay: 0s;
+}
+
+.resources-page .rs-faq-item.rs-faq-item--open .rs-faq-answer-inner {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: calc(var(--rs-faq-panel-duration) * 0.2);
+}
+
+.resources-page .rs-faq-item.rs-faq-default-open.rs-faq-item--open .rs-faq-answer {
+  transition: none;
+}
+
+.resources-page .rs-faq-item.rs-faq-default-open.rs-faq-item--open .rs-faq-answer-inner {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   transition: none;
 }
 
-.resources-page .rs-faq-list summary {
-  list-style: none;
+.resources-page .rs-faq-trigger {
+  width: 100%;
+  margin: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: inherit;
   cursor: pointer;
   padding: 24px 32px;
   display: flex;
@@ -9045,13 +9250,9 @@ main.resources-page {
   color: #4e4e4e;
 }
 
-.resources-page .rs-faq-list details[open] summary {
+.resources-page .rs-faq-item.rs-faq-item--open .rs-faq-trigger {
   font-weight: 600;
   color: #1f1a1d;
-}
-
-.resources-page .rs-faq-list summary::-webkit-details-marker {
-  display: none;
 }
 
 .resources-page .faq-arrow {
@@ -9068,15 +9269,14 @@ main.resources-page {
   display: block;
   transform: rotate(0deg);
   transform-origin: 50% 50%;
-  transition: transform var(--rs-faq-motion-duration) cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform var(--rs-faq-motion-duration) var(--rs-faq-ease);
 }
 
-.resources-page .rs-faq-list details[open] .faq-arrow img {
+.resources-page .rs-faq-item.rs-faq-item--open .faq-arrow img {
   transform: rotate(180deg);
 }
 
-/* Pre-expanded row on first paint only */
-.resources-page .rs-faq-list details.rs-faq-default-open[open] .faq-arrow img {
+.resources-page .rs-faq-item.rs-faq-default-open.rs-faq-item--open .faq-arrow img {
   transform: rotate(180deg);
   transition: none;
 }
@@ -9094,20 +9294,21 @@ main.resources-page {
 @media (prefers-reduced-motion: reduce) {
   .resources-page .rs-faq-list {
     --rs-faq-panel-duration: 0.01ms;
+    --rs-faq-content-duration: 0.01ms;
     --rs-faq-motion-duration: 0.01ms;
   }
 
-  .resources-page .rs-faq-answer {
+  .resources-page .rs-faq-answer,
+  .resources-page .rs-faq-answer-inner {
     transition-duration: 0.01ms;
+    transition-delay: 0s !important;
   }
 
   .resources-page .faq-arrow img {
     transition-duration: 0.01ms;
   }
 
-  .resources-page .rs-faq-list details[open] .rs-faq-answer-inner {
-    transition-duration: 0.01ms;
-    transition-delay: 0s !important;
+  .resources-page .rs-faq-item.rs-faq-item--open .rs-faq-answer-inner {
     transform: none;
   }
 }
@@ -14495,7 +14696,7 @@ body.case-study-single-page.auction-single-page {
     height: auto;
   }
 
-  .resources-page .rs-faq-list summary {
+  .resources-page .rs-faq-trigger {
     padding: 18px 20px;
     font-size: 16px;
     line-height: 24px;
@@ -14683,14 +14884,13 @@ body.case-study-single-page.auction-single-page {
     gap: 12px;
   }
 
-  .resources-page .rs-faq-list details,
-  .resources-page .rs-faq-list details:not([open]) {
+  .resources-page .rs-faq-list .rs-faq-item {
     min-height: 62px;
     height: auto;
     border-radius: 12px;
   }
 
-  .resources-page .rs-faq-list summary {
+  .resources-page .rs-faq-trigger {
     padding: 14px 14px;
     font-size: 14px;
     line-height: 20px;
@@ -16078,7 +16278,7 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     line-height: 42px;
   }
 
-  .sell-faq__list summary {
+  .sell-faq__trigger {
     padding: 18px 20px;
     font-size: 16px;
     line-height: 24px;
@@ -16223,14 +16423,13 @@ body.auction-single-page:not(.case-study-internal-page):not(.case-study-single-p
     gap: 12px;
   }
 
-  .sell-faq__list details,
-  .sell-faq__list details:not([open]) {
+  .sell-faq__list .sell-faq__item {
     min-height: 62px;
     height: auto;
     border-radius: 12px;
   }
 
-  .sell-faq__list summary {
+  .sell-faq__trigger {
     padding: 10px 12px;
     font-size: 12px;
     line-height: 17px;

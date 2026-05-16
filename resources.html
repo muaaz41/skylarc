@@ -242,6 +242,93 @@
       const faqShell = document.querySelector(".rs-faq-shell");
       const list = document.getElementById("faqList");
       const tabs = document.querySelectorAll("[data-faq-type]");
+      const faqMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      function getFaqAnswerHeight(answer) {
+        const prevHeight = answer.style.height;
+        answer.style.height = "auto";
+        const height = answer.scrollHeight;
+        answer.style.height = prevHeight;
+        return height;
+      }
+
+      function setFaqItemOpen(item, open, animate) {
+        const trigger = item.querySelector(".rs-faq-trigger");
+        const answer = item.querySelector(".rs-faq-answer");
+        if (!trigger || !answer) return;
+
+        const shouldAnimate = animate && !faqMotionQuery.matches;
+
+        if (open) {
+          item.classList.add("rs-faq-item--open");
+          trigger.setAttribute("aria-expanded", "true");
+          answer.setAttribute("aria-hidden", "false");
+
+          const targetHeight = getFaqAnswerHeight(answer);
+          if (!shouldAnimate) {
+            answer.style.height = `${targetHeight}px`;
+            return;
+          }
+
+          answer.style.height = "0px";
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              answer.style.height = `${targetHeight}px`;
+            });
+          });
+          return;
+        }
+
+        const startHeight = answer.scrollHeight;
+        item.classList.remove("rs-faq-item--open");
+        trigger.setAttribute("aria-expanded", "false");
+        answer.setAttribute("aria-hidden", "true");
+
+        if (!shouldAnimate) {
+          answer.style.height = "0px";
+          return;
+        }
+
+        answer.style.height = `${startHeight}px`;
+        requestAnimationFrame(() => {
+          answer.style.height = "0px";
+        });
+      }
+
+      function initRsFaqAccordion(items) {
+        items.forEach((item) => {
+          const trigger = item.querySelector(".rs-faq-trigger");
+          const answer = item.querySelector(".rs-faq-answer");
+          if (!trigger || !answer) return;
+
+          const isOpen = item.classList.contains("rs-faq-item--open");
+          if (!isOpen) {
+            answer.style.height = "0px";
+          } else if (item.classList.contains("rs-faq-default-open")) {
+            answer.style.height = "auto";
+          } else {
+            answer.style.height = `${getFaqAnswerHeight(answer)}px`;
+          }
+
+          answer.addEventListener("transitionend", (event) => {
+            if (event.propertyName !== "height" || !item.classList.contains("rs-faq-item--open")) return;
+            answer.style.height = "auto";
+          });
+
+          trigger.addEventListener("click", () => {
+            items.forEach((entry) => entry.classList.remove("rs-faq-default-open"));
+
+            const willOpen = !item.classList.contains("rs-faq-item--open");
+            items.forEach((entry) => {
+              if (entry === item) return;
+              if (entry.classList.contains("rs-faq-item--open")) {
+                setFaqItemOpen(entry, false, true);
+              }
+            });
+            setFaqItemOpen(item, willOpen, true);
+          });
+        });
+      }
 
       function renderFaq(type) {
         const items = faqData[type];
@@ -249,37 +336,29 @@
         list.innerHTML = items
           .map(
             (item, idx) => `
-              <details class="${idx === openIdx ? "rs-faq-default-open" : ""}" ${idx === openIdx ? "open" : ""}>
-                <summary>
+              <div class="rs-faq-item${idx === openIdx ? " rs-faq-item--open rs-faq-default-open" : ""}">
+                <button type="button" class="rs-faq-trigger" aria-expanded="${idx === openIdx ? "true" : "false"}">
                   <span>${item.q}</span>
                   <span class="faq-arrow" aria-hidden="true">
                     <img src="assets/Arrow Down.png" alt="" />
                   </span>
-                </summary>
-                <div class="rs-faq-answer">
+                </button>
+                <div class="rs-faq-answer" aria-hidden="${idx === openIdx ? "false" : "true"}">
                   <div class="rs-faq-answer-inner">
                     <p>${item.a}</p>
                   </div>
                 </div>
-              </details>
+              </div>
             `
           )
           .join("");
 
-        const detailsItems = list.querySelectorAll("details");
-        detailsItems.forEach((detail) => {
-          detail.addEventListener("toggle", () => {
-            detailsItems.forEach((d) => d.classList.remove("rs-faq-default-open"));
-            if (!detail.open) return;
-            detailsItems.forEach((other) => {
-              if (other !== detail) other.open = false;
-            });
-          });
-        });
+        const faqItems = list.querySelectorAll(".rs-faq-item");
+        initRsFaqAccordion(faqItems);
 
-        detailsItems.forEach((detail, index) => {
+        faqItems.forEach((item, index) => {
           const rowDelay = 0.14 + index * 0.08;
-          detail.style.setProperty("--rs-faq-row-delay", `${rowDelay}s`);
+          item.style.setProperty("--rs-faq-row-delay", `${rowDelay}s`);
         });
 
         list.classList.add("rs-faq-list--animate-ready");
